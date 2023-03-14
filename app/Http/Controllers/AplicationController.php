@@ -171,8 +171,11 @@ $aplication->update($Insertdata);
             'home_and_other_benefite'=>$r->home_and_other_benefite,
             'right_area'=>$r->right_area,
             'distanceTo'=>$r->distanceTo,
+            'reporter_name'=>$r->reporter_name,
+            'reporter_signature'=>$r->reporter_signature,
+            'reporter_id'=>$r->reporter_id,
         ];
-            
+
 
 
 
@@ -184,16 +187,19 @@ $aplication->update($Insertdata);
         }
 
 
-      
-   
+
+
 
         application_repprt::create($data);
         $up = [
-            'status'=>'processied'
+            'status'=>'processied',
+            'reporter_name'=>$r->reporter_name,
+            'reporter_signature'=>$r->reporter_signature,
+            'reporter_id'=>$r->reporter_id,
         ];
        return   aplication::find($license_id)->update($up);
 
-   
+
 
 
 

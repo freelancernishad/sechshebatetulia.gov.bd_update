@@ -3,7 +3,7 @@
 <form @submit.stop.prevent="finalSubmit">
 
 
-      
+
 
 
             <div class="row">
@@ -185,7 +185,7 @@ export default {
         }
     },
     methods: {
-        
+
     FileSelected($event, parent_index) {
             let file = $event.target.files[0];
             if (file.size > 5048576) {
@@ -202,6 +202,12 @@ export default {
         },
 
         async finalSubmit(){
+
+            this.form['reporter_name'] = this.getUsers.name
+            this.form['reporter_signature'] = this.getUsers.signature
+            this.form['reporter_id'] = this.getUsers.id
+
+
             var res = await this.callApi('post',`/api/application/approve/submit`,this.form);
             console.log(res)
             this.$root.$emit('bv::hide::modal', 'dakhil-modal')

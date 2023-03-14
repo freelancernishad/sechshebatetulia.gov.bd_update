@@ -2565,6 +2565,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         wordNo: '',
         village: '',
         mobile_number: '',
+        email: '',
         nid_no: '',
         nolkup_type: '',
         nolkup_size: '',
@@ -2582,7 +2583,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         near_nolkup_poscim: '',
         electricity_distance: '',
         description: '',
-        deposite_fee: '',
+        deposite_fee: '0',
         deposite_date: '',
         owner_type: '',
         passport_size_mage: '',
@@ -2791,17 +2792,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this8 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-        var payment_type, res, datas;
+        var res, datas;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
                 _this8.submitLoad = true;
-                payment_type = _this8.getunionInfos.payment_type;
-                _context7.next = 4;
+                _context7.next = 3;
                 return _this8.callApi("post", "/api/sonod/submit", _this8.form);
 
-              case 4:
+              case 3:
                 res = _context7.sent;
                 datas = res.data;
                 Swal.fire({
@@ -2809,26 +2809,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u0986\u09AC\u09C7\u09A6\u09A8\u099F\u09BF \u09B8\u09AB\u09B2\u09AD\u09BE\u09AC\u09C7 \u09A6\u09BE\u0996\u09BF\u09B2 \u09B9\u09DF\u09C7\u099B\u09C7",
                   icon: "success",
                   confirmButtonColor: "green",
-                  confirmButtonText: "\u0986\u09AC\u09C7\u09A6\u09A8\u09AA\u09A4\u09CD\u09B0 \u09A1\u09BE\u0989\u09A8\u09B2\u09CB\u09A1"
+                  confirmButtonText: "\u0986\u09AC\u09C7\u09A6\u09A8\u09AA\u09A4\u09CD\u09B0 \u09A1\u09BE\u0989\u09A8\u09B2\u09CB\u09A1",
+                  allowOutsideClick: false,
+                  allowEscapeKey: false
                 }).then( /*#__PURE__*/function () {
                   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(result) {
                     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
                       while (1) {
                         switch (_context6.prev = _context6.next) {
                           case 0:
-                            console.log(result);
-
                             if (result.isConfirmed) {
-                              // this.$root.$emit('bv::hide::modal', 'info-modal')
-                              //   this.$router.push({ name: "home" });
                               window.location.href = "/apllication/document/".concat(datas.id);
-                            } else if (result.isDenied) {// this.$root.$emit('bv::hide::modal', 'info-modal')
-                            } else if (result.isDismissed) {
-                              //cancel
+                            } else if (result.isDenied) {} else if (result.isDismissed) {
                               _this8.$router.push({
                                 name: "home"
                               });
                             }
+
+                            _this8.submitLoad = false;
 
                           case 2:
                           case "end":
@@ -2843,7 +2841,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   };
                 }());
 
-              case 7:
+              case 6:
               case "end":
                 return _context7.stop();
             }
@@ -2854,6 +2852,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     this.getdivisionFun();
+    this.form.deposite_date = this.dateformatGlobal()[0];
   }
 });
 
@@ -5718,7 +5717,6 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      name: "division",
       id: "division",
       required: ""
     },
@@ -5762,7 +5760,6 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      name: "district",
       id: "district",
       required: ""
     },
@@ -5806,7 +5803,6 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      name: "thana",
       id: "thana",
       required: ""
     },
@@ -5850,7 +5846,6 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      name: "thana",
       id: "thana",
       required: ""
     },
@@ -6077,6 +6072,8 @@ var render = function render() {
     attrs: {
       type: "text",
       id: "mobile_number",
+      minlength: "11",
+      maxlength: "11",
       placeholder: "",
       required: ""
     },
@@ -6088,6 +6085,38 @@ var render = function render() {
         if ($event.target.composing) return;
 
         _vm.$set(_vm.form, "mobile_number", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("ইমেইল")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.email,
+      expression: "form.email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      id: "email",
+      placeholder: ""
+    },
+    domProps: {
+      value: _vm.form.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "email", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -6969,7 +6998,17 @@ var render = function render() {
         }
       }
     }, [_vm._v("মুছন")])])]);
-  }), 0)])])]), _vm._v(" "), _vm._m(9)])])])]), _vm._v(" "), _c("b-modal", {
+  }), 0)])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12 my-5 text-center"
+  }, [!_vm.submitLoad ? _c("input", {
+    staticClass: "btn btn-success",
+    attrs: {
+      type: "submit",
+      value: "দাখিল করুন"
+    }
+  }) : _vm.submitLoad ? _c("span", {
+    staticClass: "btn btn-info"
+  }, [_vm._v("অপেক্ষা করুন...")]) : _vm._e()])])])])]), _vm._v(" "), _c("b-modal", {
     attrs: {
       id: _vm.infoModal.id,
       size: "xl",
@@ -7078,19 +7117,6 @@ var staticRenderFns = [function () {
   return _c("div", {
     staticClass: "col-md-12 form_title"
   }, [_c("h5", [_vm._v("আবেদনের সাথে দাখিলকৃত প্রয়োজনীয় কাগজপত্র")])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "col-md-12 my-5 text-center"
-  }, [_c("input", {
-    staticClass: "btn btn-success",
-    attrs: {
-      type: "submit",
-      value: "দাখিল করুন"
-    }
-  })]);
 }];
 render._withStripped = true;
 

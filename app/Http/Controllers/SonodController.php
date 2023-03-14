@@ -41,222 +41,85 @@ class SonodController extends Controller
     public function sonodpaymentSuccess(Request $request)
     {
         $transId =  $request->transId;
-        $payment = Payment::where(['trxId' => $transId])->first();
+         $payment = Payment::where(['trxId' => $transId])->first();
         $id = $payment->sonodId;
-        $sonod = Sonod::find($id);
-        $unioun_name =  $sonod->unioun_name;
-        $sonod_name =  $sonod->sonod_name;
-        $uniouninfo = Uniouninfo::where(['short_name_e' => $unioun_name])->first();
-        // $sonodnamelists = Sonodnamelist::where(['bnname' => $sonod_name])->first();
-        $payment_type = $uniouninfo->payment_type;
-        if ($payment_type == 'Prepaid') {
-            $payment->update(['status' => 'Paid']);
-            $sonod->update(['stutus' => 'Pending', 'payment_status' => 'Paid']);
-            // $sonod_name = sonodEnName($sonod->sonod_name);
-            $InvoiceUrl =  url("/invoice/c/$id");
-            // $deccription = "অভিনন্দন! আপনার আবেদনটি সফলভাবে পরিশোধিত হয়েছে। অনুমোদনের জন্য অপেক্ষা করুন।";
-            $deccription = "Congratulation! Your application $sonod->sonod_Id has been Paid.Wait for Approval.. Invoice: $InvoiceUrl";
-            smsSend($deccription, $sonod->applicant_mobile);
-            // return redirect("/document/$sonod->sonod_name/$id");
-            echo "<script>window.close();</script>";
-        } elseif ($payment_type == 'Postpaid') {
-            $payment->update(['status' => 'Paid']);
-            $sonod->update(['payment_status' => 'Paid']);
-            // $sonod_name = sonodEnName($sonod->sonod_name);
-            $sonodUrl =  url("/sonod/d/$id");
-            $InvoiceUrl =  url("/invoice/d/$id");
-            // $deccription = "অভিনন্দন! আপনার আবেদনটি সফলভাবে পরিশোধিত হয়েছে। সনদ : $sonodUrl রশিদ : $InvoiceUrl";
-            $deccription = "Congratulation! Your application $sonod->sonod_Id has been Paid. Sonod : " . $sonodUrl . " Invoice : " . $InvoiceUrl;
-            // smsSend($deccription, $sonod->applicant_mobile);
-            return redirect("/sonod/payment/success/$id");
-            echo '
-    <style>
-      body {
-        text-align: center;
-        padding: 40px 0;
-        background: #EBF0F5;
-      }
-        h1 {
-          color: #88B04B;
-          font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-          font-weight: 900;
-          font-size: 40px;
-          margin-bottom: 10px;
-        }
-        p {
-          color: #404F5E;
-          font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-          font-size:20px;
-          margin: 0;
-        }
-      i {
-        color: #9ABC66;
-        font-size: 100px;
-        line-height: 200px;
-        margin-left:-15px;
-      }
-      .card {
-        background: white;
-        padding: 60px;
-        border-radius: 4px;
-        box-shadow: 0 2px 3px #C8D0D8;
-        display: inline-block;
-        margin: 0 auto;
-      }
-      .buttons{
-        color: white;
-        text-decoration: none;
-        padding: 8px 14px;
-        border-radius: 7px;
-        margin: 20px 8px;
-      }
-      .buttons.d{
-        background: #0b4fb6;
-      }
-      .buttons.r{
-        background: #8d2407;
-      }
-      .buttons.h{
-        background: #380bb6;
-      }
-    </style>
-      <div class="card">
-      <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-        <i class="checkmark">✓</i>
-      </div>
-        <h1>ধন্যবাদ</h1>
-        <p>আমারা আপনার পেমেন্ট গ্রহন করেছি!</p>
-        <div style="display:flex">
-            <a class="buttons d" href="">আপনার সনদটি ডাউনলোড করুন</a>
-            <a class="buttons r" href="">আপনার রশিদটি ডাউনলোড করুন</a>
-            </div>
-            <a class="buttons h" href="">মুল পেজএ ফিরে যান</a>
-      </div>
-            ';
-        }
+        $sonod = aplication::find($id);
+
+            if($payment->status=='Paid'){
+                $InvoiceUrl =  url("/invoice/c/$id");
+                return view('applicationSuccess', compact('payment', 'sonod'));
+            }else{
+                echo "
+                <div style='text-align:center'>
+                <h1 style='text-align:center'>Payment Failed</h1>
+                <a href='/' style='border:1px solid black;padding:10px 12px; background:red;color:white'>Back To Home</a>
+                <a href='/sonod/payment/$sonod->id' style='border:1px solid black;padding:10px 12px; background:green;color:white'>Pay Again</a>
+                </div>
+                ";
+            }
+
+
+
+
     }
     public function sonodpayment(Request $request, $id)
     {
-        //  $unioun_name =  $r->unioun_name;
-        $sonod = Sonod::find($id);
-        $unioun_name =  $sonod->unioun_name;
-        $sonod_name =  $sonod->sonod_name;
-        $uniouninfo = Uniouninfo::where(['short_name_e' => $unioun_name])->first();
-        $sonodnamelists = Sonodnamelist::where(['bnname' => $sonod_name])->first();
-        $payment_type = $uniouninfo->payment_type;
-        if ($payment_type == 'Prepaid') {
-            $sonod_fee =  $sonodnamelists->sonod_fee;
-            $unioninfos = Uniouninfo::where(['short_name_e' => $unioun_name])->first();
-            $district = $unioninfos->district;
-            $thana = $unioninfos->thana;
-            $CharageCount = Charage::where(['district' => $district, 'thana' => $thana])->count();
-            $vat = 0;
-            $tax = 0;
-            $service = 0;
-            if ($CharageCount > 0) {
-                $charge =   Charage::where(['district' => $district, 'thana' => $thana])->first();
-                $vat = $charge->vat;
-                $tax = $charge->tax;
-                $service = $charge->service;
-            }
-            $vatAmount = (($sonod_fee * $vat) / 100);
-            $taxAmount = (($sonod_fee * $tax) / 100);
-            $totalamount = $sonod_fee + $vatAmount + $taxAmount + $service;
-            if ($totalamount == null || $totalamount == '' || $totalamount < 10) {
-                $totalamount = 10;
-            }
-            $arraydata = [
-                'total_amount' => $totalamount,
-                'pesaKor' => $request->pesaKor,
-                'tredeLisenceFee' => $request->tredeLisenceFee,
-                'vatAykor' => $request->vatAykor,
-                'khat' => $request->khat,
-                'last_years_money' => 0,
-                'currently_paid_money' => $totalamount,
-            ];
-            $amount_deails = json_encode($arraydata);
-            $numto = new NumberToBangla();
-            $the_amount_of_money_in_words = $numto->bnMoney($totalamount) . ' মাত্র';
-            $updateData = [
-                'khat' => $request->khat,
-                'last_years_money' => 0,
-                'currently_paid_money' => $totalamount,
-                'total_amount' => $totalamount,
-                'amount_deails' => $amount_deails,
-                'the_amount_of_money_in_words' => $the_amount_of_money_in_words,
-            ];
-            $sonod->update($updateData);
-            $total_amount = $sonod->total_amount;
-            $amount = 0;
-            if ($total_amount == null || $total_amount == '' || $total_amount < 10) {
-                $amount = 10;
-            } else {
-                $amount = $total_amount;
-            }
-            $trnx_id = time();
-            $cust_info = [
-                "cust_email" => "",
-                "cust_id" => "$sonod->sonod_Id",
-                "cust_mail_addr" => "Address",
-                "cust_mobo_no" => "$sonod->applicant_mobile",
-                "cust_name" => "Customer Name"
-            ];
-            $req_timestamp = date('Y-m-d H:i:s');
-            $customerData = [
-                'union' => $sonod->unioun_name,
-                'trxId' => $trnx_id,
-                'sonodId' => $id,
-                'sonod_type' => $sonod->sonod_name,
-                'amount' => $amount,
-                'mob' => $sonod->applicant_mobile,
-                'status' => "Pending",
-                'date' => date('Y-m-d'),
-                'created_at' => $req_timestamp,
-            ];
-            Payment::create($customerData);
-            $redirectutl =  ekpayToken($trnx_id, $amount, $cust_info);
-            return redirect($redirectutl);
-        } elseif ($payment_type == 'Postpaid') {
-            $stutus = $sonod->stutus;
-            $payment_status = $sonod->payment_status;
-            if ($stutus != 'approved') {
-                return "আপনার অনুসন্ধানকৃত সনদ/প্রত্যয়নপত্র অত্র ইউনিয়ন পরিষদ থেকে এখনও অনুমোদন করা হয়নি।";
-            }
-            if ($payment_status != 'Unpaid' && $stutus == 'approved') {
-                return redirect("/sonod/$sonod->sonod_name/$id");
-            }
-            $total_amount = $sonod->total_amount;
-            $amount = 0;
-            if ($total_amount == null || $total_amount < 10) {
-                $amount = 10;
-            } else {
-                $amount = $total_amount;
-            }
-            $trnx_id = time();
-            $cust_info = [
-                "cust_email" => "",
-                "cust_id" => "$sonod->sonod_Id",
-                "cust_mail_addr" => "Address",
-                "cust_mobo_no" => "$sonod->applicant_mobile",
-                "cust_name" => "Customer Name"
-            ];
-            $req_timestamp = date('Y-m-d H:i:s');
-            $customerData = [
-                'union' => $sonod->unioun_name,
-                'trxId' => $trnx_id,
-                'sonodId' => $id,
-                'sonod_type' => $sonod->sonod_name,
-                'amount' => $amount,
-                'mob' => $sonod->applicant_mobile,
-                'status' => "Pending",
-                'date' => date('Y-m-d'),
-                'created_at' => $req_timestamp,
-            ];
-            Payment::create($customerData);
-            $redirectutl =  ekpayToken($trnx_id, $amount, $cust_info);
-            return redirect($redirectutl);
+
+        $sonod = aplication::find($id);
+
+
+        $feeParams = $request->f;
+        $total_amount = 0;
+        if($feeParams=='l'){
+            $total_amount = 1000;
+            $sonod_type = 'license_fee';
+
+        }elseif($feeParams=='a'){
+            $total_amount = 200;
+            $sonod_type = 'application_fee';
         }
+
+
+
+            $amount = 0;
+
+            if ($total_amount == null || $total_amount == '' || $total_amount < 1) {
+                $amount = 1;
+            } else {
+                $amount = $total_amount;
+            }
+            $trnx_id = time();
+
+            $cust_info = [
+                "cust_email" => "",
+                "cust_id" => "$sonod->id",
+                "cust_mail_addr" => "Address",
+                "cust_mobo_no" => "$sonod->mobile_number",
+                "cust_name" => "Customer Name"
+            ];
+            $req_timestamp = date('Y-m-d H:i:s');
+            $redirectutl =  ekpayToken($trnx_id, $amount, $cust_info);
+            $customerData = [
+                'union' => '',
+                'trxId' => $trnx_id,
+                'sonodId' => $id,
+                'sonod_type' => $sonod_type,
+                'amount' => $amount,
+                'mob' => $sonod->mobile_number,
+                'paymentUrl' => $redirectutl,
+                'status' => "Pending",
+                'date' => date('Y-m-d'),
+                'created_at' => $req_timestamp,
+            ];
+            Payment::create($customerData);
+
+            return redirect($redirectutl);
+
     }
+
+
+
+
     public function akpay(Request $request)
     {
         $trnx_id = time();
@@ -270,33 +133,7 @@ class SonodController extends Controller
         $redirectutl =  ekpayToken($trnx_id, 10, $cust_info);
         return redirect($redirectutl);
     }
-    public function sonod_id(Request $request)
-    {
-        $sonodFinalId = '';
-        $sortYear =  date('y');
-        $union =  $request->union;
-        $UniouninfoCount =   Uniouninfo::where('short_name_e', $union)->latest()->count();
-        $SonodCount =   Sonod::where(['unioun_name' => $union, 'year' => date('Y')])->latest()->count();
-        if ($UniouninfoCount > 0) {
-            $Uniouninfo =   Uniouninfo::where('short_name_e', $union)->latest()->first();
-            if ($SonodCount > 0) {
-                $Sonod =  Sonod::where(['unioun_name' => $union, 'year' => date('Y')])->latest()->first();
-                if ($Sonod->sonod_Id == '') {
-                    $sonod_Id = str_pad(00001, 5, '0', STR_PAD_LEFT);
-                    $sonodFinalId =  $Uniouninfo->u_code . $sortYear . $sonod_Id;
-                } else {
-                    // $sonod_Id = $Sonod->Sonod+1;
-                    $sonod_Id = str_pad($Sonod->sonod_Id, 5, '0', STR_PAD_LEFT);
-                    // $sonodFinalId =  $Uniouninfo->u_code.$sortYear.$sonod_Id;
-                    $sonodFinalId = $Sonod->sonod_Id + 1;
-                }
-            } else {
-                $sonod_Id = str_pad(00001, 5, '0', STR_PAD_LEFT);
-                $sonodFinalId =  $Uniouninfo->u_code . $sortYear . $sonod_Id;
-            }
-        };
-        return $sonodFinalId;
-    }
+
     function allsonodId($union, $sonodname)
     {
         $sonodFinalId = '';
@@ -342,12 +179,32 @@ class SonodController extends Controller
         }
     }
 
-
+    public function sonod_id()
+    {
+        $sonodFinalId = '';
+        $sortYear =  date('y');
+        $SonodCount =   aplication::latest()->count();
+            if ($SonodCount > 0) {
+                $Sonod =  aplication::latest()->first();
+                if ($Sonod->licence_no == '') {
+                    $licence_no = str_pad(00001, 5, '0', STR_PAD_LEFT);
+                    $sonodFinalId =  '77190831' . $sortYear . $licence_no;
+                } else {
+                    $sonodFinalId = $Sonod->licence_no + 1;
+                }
+            }else{
+                $licence_no = str_pad(00001, 5, '0', STR_PAD_LEFT);
+                $sonodFinalId =  '77190831' . $sortYear . $licence_no;
+            }
+        return $sonodFinalId;
+    }
 
     public function sonod_submit(Request $r)
     {
         $id = $r->id;
         $data = $r->except(['passport_size_mage','nid_copy','land_copy','khotiyan_copy','tax_copy','map','wyarisan']);
+
+        $data['licence_no'] = $this->sonod_id();
 
         // return $r->land_copy;
 
@@ -394,14 +251,30 @@ class SonodController extends Controller
             $data['wyarisan'] =  fileupload($r->wyarisan, "sonod/wyarisan/");
         }
 
-
+        // return $data;
         try {
             $sonod =   aplication::create($data);
+
+            $des = "অভিনন্দন! অনলাইন সেচ সেবায় আপনার আবেদন গ্রহণ করা হয়েছে। বিধি মোতাবেক আগামী ২০ (বিশ) কার্যদিবসের মধ্যে তদন্ত সম্পন্ন করা হবে। ধন্যবাদ";
+             $mobile = int_bn_to_en($r->mobile_number);
+            SmsNocSmsSend($des,"$mobile");
+
             return  $sonod;
         } catch (Exception $e) {
             return sent_error($e->getMessage(), $e->getCode());
         }
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -812,9 +685,14 @@ class SonodController extends Controller
 
 
 
-        return aplication::orWhere('appicant_name', 'like', "%$sondId%")
-        ->orWhere('mobile_number', 'like', "%$sondId%")
+        return aplication::where('status',"$status")
+        ->where(function ($q)  use ($sondId) {
+            $q->  orWhere('appicant_name', 'like', "%$sondId%")
+            ->orWhere('licence_no', 'like', "%$sondId%")
+            ->orWhere('mobile_number', 'like', "%$sondId%");
+        })
         ->paginate(20);
+
 
 
 
@@ -1494,8 +1372,20 @@ if ($sonod_name == 'ওয়ারিশান সনদ') {
 
     public function statusChange(Request $request,$status,$id)
     {
+        $approved_date = date('Y-m-d H:i:s');
         $aplication = aplication::find($id);
-     return    $aplication->update(['status'=>$status]);
+
+
+        if($status=='approved'){
+            $des = "অনলাইন সেচ সেবায় আপনার আবেদনটি অনুমোদিত হয়েছে। লাইসেন্স প্রাপ্তির জন্য লিংকে গিয়ে নির্ধারিত ফি পরিশোধ করুন";
+              $mobile = int_bn_to_en($aplication->mobile_number);
+            SmsNocSmsSend($des,"$mobile");
+         }
+
+         $aplication->update(['status'=>$status,'approved_date'=>$approved_date]);
+
+
+
 
     }
 

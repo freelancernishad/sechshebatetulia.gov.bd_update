@@ -26,6 +26,9 @@ class application_repprt extends Model
 'right_area',
 'distanceTo',
 'hand_map',
+'reporter_name',
+'reporter_signature',
+'reporter_id',
     ];
 
 

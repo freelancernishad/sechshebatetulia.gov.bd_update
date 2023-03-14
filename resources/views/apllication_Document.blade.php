@@ -19,7 +19,7 @@
 
 
 
-    আবেদনের ক্রমিক নং: {{ int_en_to_bn('77190831'.$row->licence_no ) }} । তারিখঃ {{  int_en_to_bn(date('d-m-Y',strtotime($row->created_at))) }}
+    আবেদনের ক্রমিক নং: {{ int_en_to_bn($row->licence_no ) }} । তারিখঃ {{  int_en_to_bn(date('d-m-Y',strtotime($row->created_at))) }}
 
 
 </div>

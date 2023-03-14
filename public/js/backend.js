@@ -3887,10 +3887,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                _this2.form['reporter_name'] = _this2.getUsers.name;
+                _this2.form['reporter_signature'] = _this2.getUsers.signature;
+                _this2.form['reporter_id'] = _this2.getUsers.id;
+                _context.next = 5;
                 return _this2.callApi('post', "/api/application/approve/submit", _this2.form);
 
-              case 2:
+              case 5:
                 res = _context.sent;
                 console.log(res);
 
@@ -3898,7 +3901,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this2.$emit('event-name');
 
-              case 6:
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -7207,7 +7210,39 @@ var render = function render() {
     staticClass: "card-body"
   }, [_c("table", {
     staticClass: "table table-hover table-striped sonodTable"
-  }, [_vm._m(0), _vm._v(" "), _c("tbody", {
+  }, [_c("thead", {
+    staticClass: "sonodThead"
+  }, [_c("tr", [_vm.$route.params.type == "approved" ? _c("th", {
+    attrs: {
+      width: "8%",
+      "data-orderable": "false"
+    }
+  }, [_vm._v("লাইসেন্স নং")]) : _c("th", {
+    attrs: {
+      width: "8%",
+      "data-orderable": "false"
+    }
+  }, [_vm._v("রেজিস্টেশন নং")]), _vm._v(" "), _c("th", {
+    attrs: {
+      width: "20%"
+    }
+  }, [_vm._v("নাম")]), _vm._v(" "), _c("th", {
+    attrs: {
+      width: "15%"
+    }
+  }, [_vm._v("মোবাইল নম্বর")]), _vm._v(" "), _c("th", {
+    attrs: {
+      width: "25%"
+    }
+  }, [_vm._v("ঠিকানা")]), _vm._v(" "), _c("th", {
+    attrs: {
+      width: "15%"
+    }
+  }, [_vm._v("View")]), _vm._v(" "), _c("th", {
+    attrs: {
+      width: "40%"
+    }
+  }, [_vm._v("Action")])])]), _vm._v(" "), _c("tbody", {
     staticClass: "sonodTbody"
   }, _vm._l(_vm.items, function (item, index) {
     return _c("tr", {
@@ -7294,7 +7329,13 @@ var render = function render() {
         href: "/license/" + item.id,
         target: "_blank"
       }
-    }, [_vm._v("লাইসেন্সে ডাউনলোড করুন")]) : _vm._e(), _vm._v(" "), item.status == "canceled" ? _c("a", {
+    }, [_vm._v("লাইসেন্সে ডাউনলোড করুন")]) : _vm._e(), _vm._v(" "), item.status == "approved" ? _c("a", {
+      staticClass: "btn btn-success",
+      attrs: {
+        href: "/l/f/" + item.id + "?f=l",
+        target: "_blank"
+      }
+    }, [_vm._v("Test pay")]) : _vm._e(), _vm._v(" "), item.status == "canceled" ? _c("a", {
       staticClass: "btn btn-danger",
       attrs: {
         href: "/dashboard/application/delete/" + item.id
@@ -7741,39 +7782,7 @@ var render = function render() {
   })], 1)])], 1);
 };
 
-var staticRenderFns = [function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("thead", {
-    staticClass: "sonodThead"
-  }, [_c("tr", [_c("th", {
-    attrs: {
-      width: "8%",
-      "data-orderable": "false"
-    }
-  }, [_vm._v("লাইসেন্স নং")]), _vm._v(" "), _c("th", {
-    attrs: {
-      width: "20%"
-    }
-  }, [_vm._v("নাম")]), _vm._v(" "), _c("th", {
-    attrs: {
-      width: "15%"
-    }
-  }, [_vm._v("মোবাইল নম্বর")]), _vm._v(" "), _c("th", {
-    attrs: {
-      width: "25%"
-    }
-  }, [_vm._v("ঠিকানা")]), _vm._v(" "), _c("th", {
-    attrs: {
-      width: "15%"
-    }
-  }, [_vm._v("View")]), _vm._v(" "), _c("th", {
-    attrs: {
-      width: "40%"
-    }
-  }, [_vm._v("Action")])])]);
-}];
+var staticRenderFns = [];
 render._withStripped = true;
 
 

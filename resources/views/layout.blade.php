@@ -61,7 +61,7 @@ li.page-item.active button {
 
     @php
      $users = Auth::user();
-     $users['words'] = json_decode($users->words);
+    //  $users['words'] = json_decode($users->words);
 
         // die();
     @endphp

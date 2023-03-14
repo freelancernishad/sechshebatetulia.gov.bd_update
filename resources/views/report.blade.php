@@ -99,7 +99,7 @@
             <tr>
                 <td>৬</td>
                 <td>নিকটবর্তী অন্যান্য নলকূপ এবং বৈদ্যুতিক সংযোগের দূরত্ব (হাত নকশা)</td>
-                <td><img width="230px" height="200px" src="{!! $map !!}" alt=""></td>
+                <td><img width="100px" src="{!! $map !!}" alt=""></td>
             </tr>
 
 
@@ -112,7 +112,15 @@
     ৪। সেচের পানি বন্টন: নলকূপ স্থাপনের স্থানটি এইরূপে নির্বাচিত হবে যাতে সেচের পানি চর্তুদিকে বিতরণ করা যায়।<br>
     </p>
 
-    <div style="width:100%;text-align:right;margin-top:100px" >তদন্তকারীর সাক্ষর</div>
+    <div style="width:100%;margin-top:50px" >
+
+<p style="text-align: center;width:200px;float:right">
+        <img width="200px" src="{{ base64($row->reporter_signature) }}" alt=""> <br>
+    <span style='margin-bottom:0 !important'>{{ $row->reporter_name }}</span> <br>
+    <span style='margin-bottom:0 !important'>তদন্তকারীর সাক্ষর</span>
+</p>
+
+    </div>
 
 
 

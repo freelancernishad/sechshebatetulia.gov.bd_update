@@ -134,7 +134,7 @@
                         <div class="form-group">
                             <label for="" class="labelColor">বিভাগ</label>
 
-                            <select class='form-control' name="division" id="division" v-model="Pdivision" @change="getdistrictFun" required>
+                            <select class='form-control'  id="division" v-model="Pdivision" @change="getdistrictFun" required>
                                 <option value="">বিভাগ নির্বাচন করুন</option>
                                 <option v-for="(div,indexx) in getdivisions" :key="'divisionss'+indexx" :value="div.id">{{ div.bn_name }}
                                 </option>
@@ -148,7 +148,7 @@
                     <div class="form-group">
                         <label for="" class="labelColor">জেলা</label>
 
-                        <select class='form-control' name="district" id="district" v-model="applicant_present_district" @change="getthanaFun" required>
+                        <select class='form-control' id="district" v-model="applicant_present_district" @change="getthanaFun" required>
                             <option value="">জেলা নির্বাচন করুন</option>
                             <option v-for="dist in getdistricts" :key="'dist'+dist.id" :value="dist.id">{{ dist.bn_name }}
                             </option>
@@ -164,7 +164,7 @@
                     <div class="form-group">
                         <label for="" class="labelColor">উপজেলা/থানা</label>
 
-                        <select class='form-control' name="thana" id="thana" v-model="thana" @change="getuniounFun" required>
+                        <select class='form-control'  id="thana" v-model="thana" @change="getuniounFun" required>
                             <option value="">উপজেলা নির্বাচন করুন</option>
                             <option v-for="thana in getthanas" :key="'thana'+thana.id" :value="thana.id">{{ thana.bn_name
                             }}</option>
@@ -179,7 +179,7 @@
                     <div class="form-group">
                         <label for="" class="labelColor">ইউনিয়ন</label>
 
-                        <select class='form-control' name="thana" id="thana" v-model="form.union"  required>
+                        <select class='form-control'  id="thana" v-model="form.union"  required>
                             <option value="">ইউনিয়ন নির্বাচন করুন</option>
                             <option v-for="union in getuniouns" :key="'union'+union.id" :value="union.bn_name">{{ union.bn_name
                             }}</option>
@@ -264,7 +264,16 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for=""  class="labelColor">মোবাইল নম্বর</label>
-                                        <input type="text" v-model="form.mobile_number" id="mobile_number" class="form-control" placeholder="" required >
+                                        <input type="text" v-model="form.mobile_number" id="mobile_number"  minlength="11" maxlength="11" class="form-control" placeholder="" required >
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for=""  class="labelColor">ইমেইল</label>
+                                        <input type="email" v-model="form.email" id="email" class="form-control" placeholder=""  >
 
                                     </div>
                                 </div>
@@ -639,7 +648,8 @@
 
                                 </div>
                                 <div class="col-md-12 my-5 text-center">
-                                    <input type="submit" value="দাখিল করুন" class="btn btn-success">
+                                    <input type="submit" value="দাখিল করুন" v-if="!submitLoad" class="btn btn-success">
+                                    <span class="btn btn-info" v-else-if="submitLoad">অপেক্ষা করুন...</span>
                                 </div>
                     </div>
 
@@ -735,6 +745,7 @@ export default {
         wordNo:'',
         village:'',
         mobile_number:'',
+        email:'',
         nid_no:'',
         nolkup_type:'',
         nolkup_size:'',
@@ -752,7 +763,7 @@ export default {
         near_nolkup_poscim:'',
         electricity_distance:'',
         description:'',
-        deposite_fee:'',
+        deposite_fee:'0',
         deposite_date:'',
         owner_type:'',
         passport_size_mage:'',
@@ -866,14 +877,8 @@ export default {
     },
     async finalSubmit() {
       this.submitLoad = true;
-
-      var payment_type = this.getunionInfos.payment_type;
-
       var res = await this.callApi("post", "/api/sonod/submit", this.form);
       var datas = res.data;
-
-
-
 
       Swal.fire({
         title: "অভিনন্দন",
@@ -881,20 +886,18 @@ export default {
         icon: "success",
         confirmButtonColor: "green",
         confirmButtonText: `আবেদনপত্র ডাউনলোড`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then(async (result) => {
-        console.log(result);
         if (result.isConfirmed) {
-          // this.$root.$emit('bv::hide::modal', 'info-modal')
-        //   this.$router.push({ name: "home" });
         window.location.href=`/apllication/document/${datas.id}`
-
-
         } else if (result.isDenied) {
-          // this.$root.$emit('bv::hide::modal', 'info-modal')
+
         } else if (result.isDismissed) {
-          //cancel
           this.$router.push({ name: "home" });
         }
+        this.submitLoad = false
+
       });
 
 
@@ -903,6 +906,7 @@ export default {
   },
   mounted() {
     this.getdivisionFun();
+    this.form.deposite_date = this.dateformatGlobal()[0];
   },
 };
 </script>

@@ -12,6 +12,7 @@ class aplication extends Model
     protected $fillable = [
 
         'id',
+        'licence_no',
         'applicant_type',
         'appicant_name',
         'applicant_father_name',
@@ -27,6 +28,7 @@ class aplication extends Model
         'wordNo',
         'village',
         'mobile_number',
+        'email',
         'nid_no',
         'nolkup_type',
         'nolkup_size',
@@ -55,6 +57,10 @@ class aplication extends Model
         'map',
         'wyarisan',
         'status',
+        'payment_status',
         'approved_date',
+        'reporter_name',
+        'reporter_signature',
+        'reporter_id',
     ];
 }

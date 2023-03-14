@@ -61,7 +61,10 @@
 
 
                         <tr>
-                            <th width="8%" data-orderable="false" >লাইসেন্স নং</th>
+
+                            <th width="8%" data-orderable="false" v-if="$route.params.type=='approved'" >লাইসেন্স নং</th>
+                            <th width="8%" data-orderable="false" v-else >রেজিস্টেশন নং</th>
+
                             <th width="20%" >নাম</th>
                             <th width="15%" >মোবাইল নম্বর</th>
                             <th width="25%" >ঠিকানা</th>
@@ -116,6 +119,7 @@
 
 
                                     <a  v-if="item.status=='approved'" :href="'/license/'+item.id" target="_blank" class="btn btn-success">লাইসেন্সে ডাউনলোড করুন</a>
+                                    <a  v-if="item.status=='approved'" :href="'/l/f/'+item.id+'?f=l'" target="_blank" class="btn btn-success">Test pay</a>
 
 
                                 <a  v-if="item.status=='canceled'" :href="'/dashboard/application/delete/'+item.id" class="btn btn-danger">Delete</a>

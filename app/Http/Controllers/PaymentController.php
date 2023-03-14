@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use App\Models\aplication;
 use App\Models\Uniouninfo;
 use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Exports\ReportExport;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Meneses\LaravelMpdf\Facades\LaravelMpdf;
 
@@ -14,6 +16,42 @@ class PaymentController extends Controller
 {
 
 
+    public function ipn(Request $request)
+    {
+        $data = $request->all();
+        Log::info(json_encode($data));
+        $sonod = aplication::find($data['cust_info']['cust_id']);
+        $trnx_id = $data['trnx_info']['mer_trnx_id'];
+        $payment = payment::where('trxid', $trnx_id)->first();
+
+        $sonod_type = $payment->sonod_type;
+
+        $Insertdata = [];
+        if ($data['msg_code'] == '1020') {
+            $Insertdata = [
+                'status' => 'Paid',
+                'method' => $data['pi_det_info']['pi_name'],
+            ];
+            $updateData = ['status' => 'unknown'];
+            if($sonod_type=='application'){
+                $updateData = ['status' => 'pending'];
+            }if($sonod_type=='license_fee'){
+                $updateData = ['payment_status' => 'Paid'];
+            }
+            $sonod->update($updateData);
+        } else {
+            $updateData = ['status' => 'unknown'];
+            if($sonod_type=='application'){
+                $updateData = ['status' => 'Failed'];
+            }if($sonod_type=='license_fee'){
+                $updateData = ['payment_status' => 'Failed'];
+            }
+            $sonod->update($updateData);
+            $Insertdata = ['status' => 'Failed',];
+        }
+        $Insertdata['ipnResponse'] = json_encode($data);
+        return $payment->update($Insertdata);
+    }
 
     public function export(Request $request)
     {

@@ -1,9 +1,11 @@
 <?php
 use App\Models\Role;
 use App\Models\Sonod;
+use App\Models\Payment;
 use App\Models\TikaLog;
 use App\Models\Visitor;
 use App\Models\Uniouninfo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +48,35 @@ Route::get('/passGen/{pass}', function ($pass) {
 
 
 
+Route::get('/sonod/payment/success/{id}', [SonodController::class,'sonodpaymentSuccessView']);
+
+Route::get('/payment/success', function (Request $request) {
+    // return $request->all();
+    $transId = $request->transId;
+
+    $payment = Payment::where(['trxId' => $transId])->first();
+
+    $redirect = "/payment/success/confirm?transId=$transId";
+
+    echo "
+    <h3 style='text-align:center'>Please wait 10 seconds.This page will auto redirect you</h3>
+    <script>
+    setTimeout(() => {
+    window.location.href='$redirect'
+    }, 10000);
+    </script>
+    ";
+    // return redirect("/payment/success/confirm?transId=$transId");
+});
+Route::get('/payment/success/confirm', [SonodController::class,'sonodpaymentSuccess']);
+
+Route::get('/l/f/{id}', [SonodController::class,'sonodpayment']);
+
+// Route::get('/sonod/payment/{id}', [SonodController::class,'sonodpayment']);
+
+
+
+
 
 
 
@@ -68,7 +99,7 @@ Route::post('logout',[LoginController::class,'logout']);
 
 
 Route::get('/sonod/payment/success/{id}', [SonodController::class,'sonodpaymentSuccessView']);
-Route::get('/payment/success', [SonodController::class,'sonodpaymentSuccess']);
+// Route::get('/payment/success', [SonodController::class,'sonodpaymentSuccess']);
 Route::get('/sonod/payment/{id}', [SonodController::class,'sonodpayment']);
 Route::get('/sonod/{name}/{id}', [SonodController::class,'sonodDownload']);
 Route::get('/invoice/{name}/{id}', [SonodController::class,'invoice']);

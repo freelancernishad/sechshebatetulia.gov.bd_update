@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>sechsheba-77190{{ $licence_no }}.pdf</title>
+	<title>sechsheba-{{ $licence_no }}.pdf</title>
 
 </head>
 <body style="font-family: 'bangla', sans-serif;font-size:14px;">
@@ -85,7 +85,7 @@
 
     ?>
 
-<div style="width:300px;margin:0 auto;background:#06502B;color:white;text-align:center;padding:8px 12px;font-size:20px">লাইসেন্স নং {{ int_en_to_bn('77190'.$row->licence_no ) }}</div>
+<div style="width:300px;margin:0 auto;background:#06502B;color:white;text-align:center;padding:8px 12px;font-size:20px">লাইসেন্স নং {{ int_en_to_bn($row->licence_no ) }}</div>
 
 
 
