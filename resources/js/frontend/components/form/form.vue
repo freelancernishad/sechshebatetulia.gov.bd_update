@@ -484,7 +484,7 @@
 
 
 
-                                <div class="col-md-6">
+                                <div class="col-md-6 d-none">
                                     <div class="form-group">
                                         <label for=""  class="labelColor">জমাকৃত ফি এর পরিমাণ </label>
                                         <input type="text" v-model="form.deposite_fee" id="deposite_fee" class="form-control" placeholder="" required >
@@ -495,7 +495,7 @@
 
 
 
-                                <div class="col-md-6">
+                                <div class="col-md-6  d-none">
                                     <div class="form-group">
                                         <label for=""  class="labelColor">জমাদানের তারিখ </label>
                                         <input type="date" v-model="form.deposite_date" id="deposite_date" class="form-control" placeholder="" required >
@@ -558,15 +558,6 @@
 
 
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for=""  class="labelColor">দলিলের কপি</label>
-                                        <input type="file" class="custom-file-input" id="land_copy" @change="FileSelected($event, 'land_copy')">
-                                        <label class="custom-file-label" for="land_copy">Choose file</label>
-
-
-                                    </div>
-                                </div>
 
 
 
@@ -616,7 +607,36 @@
                                     </div>
                                 </div>
 
-                  
+                                <div class="col-md-12 text-center">দলিলের কপি</div>
+
+
+                                <div class="col-md-12" >
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                            <th width="75%">পাতা</th>
+                                            <th width="25%"><button type="button" class="flex justify-start btn btn-info" @click="addMore()">যোগ করুন</button></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(lan, index) in form.land_copy" :key="index">
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="file" class="form-control" @change="FileSelectedLoop($event, index)">
+
+                                                </div>
+                                        </td>
+                                            <td><button type="button" class="ml-2 btn btn-danger" @click="remove(index)" v-show="index != 0">মুছন</button></td>
+                                        </tr>
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+
+
+
                                 </div>
                                 <div class="col-md-12 my-5 text-center">
                                     <input type="submit" value="দাখিল করুন" class="btn btn-success">
@@ -737,7 +757,7 @@ export default {
         owner_type:'',
         passport_size_mage:'',
         nid_copy:'',
-        land_copy:'',
+        land_copy:[[]],
         khotiyan_copy:'',
         tax_copy:'',
         map:'',
@@ -790,6 +810,32 @@ export default {
         },
 
 
+        FileSelectedLoop($event, parent_index) {
+            let file = $event.target.files[0];
+            if (file.size > 5048576) {
+                Notification.image_validation();
+            } else {
+                let reader = new FileReader;
+                reader.onload = event => {
+                    this.form['land_copy'][parent_index] = event.target.result
+                    // console.log(event.target.result);
+                };
+                reader.readAsDataURL(file)
+            }
+            //   console.log($event.target.result);
+        },
+
+
+        addMore() {
+            this.form.land_copy.push([]);
+        },
+
+        remove(index) {
+            this.form.land_copy.splice(index, 1);
+        },
+
+
+
     async getdivisionFun() {
             var res = await this.callApi('get', `/api/getdivisions`, []);
             this.getdivisions = res.data;
@@ -826,7 +872,7 @@ export default {
       var res = await this.callApi("post", "/api/sonod/submit", this.form);
       var datas = res.data;
 
-      
+
 
 
       Swal.fire({
@@ -850,6 +896,9 @@ export default {
           this.$router.push({ name: "home" });
         }
       });
+
+
+
     },
   },
   mounted() {

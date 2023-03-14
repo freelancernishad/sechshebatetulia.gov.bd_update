@@ -3551,6 +3551,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     searchSondId: function searchSondId() {
+      this.searching = true;
       this.sonodList(true, this.sonod_id);
     },
     info: function info(item, index, button) {
@@ -3785,8 +3786,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this6.Totalpage = res.data.links;
                 if (!auto) window.scrollTo(0, 0);
                 if (!auto) _this6.preLooding = false;
+                _this6.searching = false;
 
-              case 21:
+              case 22:
               case "end":
                 return _context7.stop();
             }
@@ -7076,7 +7078,59 @@ var render = function render() {
     staticClass: "card"
   }, [_c("div", {
     staticClass: "card-header"
-  }, [_vm.TotalRows > 20 ? _c("nav", {
+  }, [_c("h3", [_vm._v("খুঁজুন")]), _vm._v(" "), _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        return _vm.searchSondId.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group d-flex",
+    staticStyle: {
+      width: "300px"
+    }
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.sonod_id,
+      expression: "sonod_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text"
+    },
+    domProps: {
+      value: _vm.sonod_id
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.sonod_id = $event.target.value;
+      }
+    }
+  }), _vm._v(" "), _vm.searching ? _c("button", {
+    staticClass: "btn btn-info",
+    staticStyle: {
+      "font-size": "22px",
+      "margin-left": "11px"
+    },
+    attrs: {
+      type: "button",
+      disabled: ""
+    }
+  }, [_vm._v("অপেক্ষা করুন")]) : _c("button", {
+    staticClass: "btn btn-info",
+    staticStyle: {
+      "font-size": "22px",
+      "margin-left": "11px"
+    },
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("খুঁজুন")])])]), _vm._v(" "), _vm.TotalRows > 20 ? _c("nav", {
     attrs: {
       "aria-label": "Page navigation example"
     }

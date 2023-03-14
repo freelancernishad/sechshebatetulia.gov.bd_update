@@ -16,7 +16,7 @@
 
         <div class="card">
             <div class="card-header">
-                 <!-- <h3>রেজিস্ট্রেশন নাম্বার দিয়ে খুঁজুন</h3>
+                 <h3>খুঁজুন</h3>
                  <form @submit.stop.prevent="searchSondId">
                 <div class="form-group d-flex" style="width:300px">
                     <input type="text" class="form-control" v-model="sonod_id" >
@@ -25,7 +25,7 @@
                     <button type="submit" class="btn btn-info" v-else style="font-size: 22px;margin-left: 11px;">খুঁজুন</button>
 
                 </div>
-            </form> -->
+            </form>
 
 
                 <nav aria-label="Page navigation example" v-if="TotalRows>20">
@@ -524,6 +524,7 @@ export default {
     },
     methods: {
         searchSondId() {
+            this.searching = true
             this.sonodList(true, this.sonod_id)
         },
 
@@ -631,6 +632,7 @@ export default {
                 this.Totalpage = res.data.links
                 if (!auto) window.scrollTo(0, 0);
                 if (!auto) this.preLooding = false
+                this.searching = false
         },
 
     },

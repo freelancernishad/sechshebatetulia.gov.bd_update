@@ -2587,7 +2587,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         owner_type: '',
         passport_size_mage: '',
         nid_copy: '',
-        land_copy: '',
+        land_copy: [[]],
         khotiyan_copy: '',
         tax_copy: '',
         map: '',
@@ -2635,8 +2635,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       } //   console.log($event.target.result);
 
     },
-    getdivisionFun: function getdivisionFun() {
+    FileSelectedLoop: function FileSelectedLoop($event, parent_index) {
       var _this2 = this;
+
+      var file = $event.target.files[0];
+
+      if (file.size > 5048576) {
+        Notification.image_validation();
+      } else {
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+          _this2.form['land_copy'][parent_index] = event.target.result; // console.log(event.target.result);
+        };
+
+        reader.readAsDataURL(file);
+      } //   console.log($event.target.result);
+
+    },
+    addMore: function addMore() {
+      this.form.land_copy.push([]);
+    },
+    remove: function remove(index) {
+      this.form.land_copy.splice(index, 1);
+    },
+    getdivisionFun: function getdivisionFun() {
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var res;
@@ -2645,11 +2669,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this2.callApi('get', "/api/getdivisions", []);
+                return _this3.callApi('get', "/api/getdivisions", []);
 
               case 2:
                 res = _context.sent;
-                _this2.getdivisions = res.data;
+                _this3.getdivisions = res.data;
 
               case 4:
               case "end":
@@ -2660,7 +2684,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     getdistrictFun: function getdistrictFun() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var res;
@@ -2669,11 +2693,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _this3.callApi('get', "/api/getdistrict?id=".concat(_this3.Pdivision), []);
+                return _this4.callApi('get', "/api/getdistrict?id=".concat(_this4.Pdivision), []);
 
               case 2:
                 res = _context2.sent;
-                _this3.getdistricts = res.data;
+                _this4.getdistricts = res.data;
 
               case 4:
               case "end":
@@ -2684,7 +2708,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     getthanaFun: function getthanaFun() {
-      var _this4 = this;
+      var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var res, resOwn;
@@ -2693,17 +2717,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return _this4.callApi('get', "/api/getthana?id=".concat(_this4.applicant_present_district), []);
+                return _this5.callApi('get', "/api/getthana?id=".concat(_this5.applicant_present_district), []);
 
               case 2:
                 res = _context3.sent;
-                _this4.getthanas = res.data;
+                _this5.getthanas = res.data;
                 _context3.next = 6;
-                return _this4.callApi('get', "/api/getdistrict?ownid=".concat(_this4.applicant_present_district), []);
+                return _this5.callApi('get', "/api/getdistrict?ownid=".concat(_this5.applicant_present_district), []);
 
               case 6:
                 resOwn = _context3.sent;
-                _this4.form.district = resOwn.data.bn_name;
+                _this5.form.district = resOwn.data.bn_name;
 
               case 8:
               case "end":
@@ -2714,7 +2738,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     getuniounFun: function getuniounFun() {
-      var _this5 = this;
+      var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var ress, res;
@@ -2723,19 +2747,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return _this5.callApi('get', "/api/getthana?ownid=".concat(_this5.thana), []);
+                return _this6.callApi('get', "/api/getthana?ownid=".concat(_this6.thana), []);
 
               case 2:
                 ress = _context4.sent;
                 // console.log(ress.data.bn_name);
-                _this5.form.upozila = ress.data.bn_name; // this.getuniouns = ress.data;
+                _this6.form.upozila = ress.data.bn_name; // this.getuniouns = ress.data;
 
                 _context4.next = 6;
-                return _this5.callApi('get', "/api/getunioun?id=".concat(_this5.thana), []);
+                return _this6.callApi('get', "/api/getunioun?id=".concat(_this6.thana), []);
 
               case 6:
                 res = _context4.sent;
-                _this5.getuniouns = res.data;
+                _this6.getuniouns = res.data;
 
               case 8:
               case "end":
@@ -2746,14 +2770,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     onSubmit: function onSubmit() {
-      var _this6 = this;
+      var _this7 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _this6.$root.$emit("bv::show::modal", _this6.infoModal.id);
+                _this7.$root.$emit("bv::show::modal", _this7.infoModal.id);
 
               case 1:
               case "end":
@@ -2764,7 +2788,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     finalSubmit: function finalSubmit() {
-      var _this7 = this;
+      var _this8 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
         var payment_type, res, datas;
@@ -2772,10 +2796,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
-                _this7.submitLoad = true;
-                payment_type = _this7.getunionInfos.payment_type;
+                _this8.submitLoad = true;
+                payment_type = _this8.getunionInfos.payment_type;
                 _context7.next = 4;
-                return _this7.callApi("post", "/api/sonod/submit", _this7.form);
+                return _this8.callApi("post", "/api/sonod/submit", _this8.form);
 
               case 4:
                 res = _context7.sent;
@@ -2801,7 +2825,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                             } else if (result.isDenied) {// this.$root.$emit('bv::hide::modal', 'info-modal')
                             } else if (result.isDismissed) {
                               //cancel
-                              _this7.$router.push({
+                              _this8.$router.push({
                                 name: "home"
                               });
                             }
@@ -6637,7 +6661,7 @@ var render = function render() {
       }
     }
   })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6"
+    staticClass: "col-md-6 d-none"
   }, [_c("div", {
     staticClass: "form-group"
   }, [_c("label", {
@@ -6670,7 +6694,7 @@ var render = function render() {
       }
     }
   })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6"
+    staticClass: "col-md-6 d-none"
   }, [_c("div", {
     staticClass: "form-group"
   }, [_c("label", {
@@ -6798,31 +6822,6 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("দলিলের কপি")]), _vm._v(" "), _c("input", {
-    staticClass: "custom-file-input",
-    attrs: {
-      type: "file",
-      id: "land_copy"
-    },
-    on: {
-      change: function change($event) {
-        return _vm.FileSelected($event, "land_copy");
-      }
-    }
-  }), _vm._v(" "), _c("label", {
-    staticClass: "custom-file-label",
-    attrs: {
-      "for": "land_copy"
-    }
-  }, [_vm._v("Choose file")])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
   }, [_vm._v("খতিয়ানের কপি")]), _vm._v(" "), _c("input", {
     staticClass: "custom-file-input",
     attrs: {
@@ -6914,7 +6913,63 @@ var render = function render() {
     attrs: {
       "for": "wyarisan"
     }
-  }, [_vm._v("Choose file")])])]) : _vm._e()]), _vm._v(" "), _vm._m(9)])])])]), _vm._v(" "), _c("b-modal", {
+  }, [_vm._v("Choose file")])])]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12 text-center"
+  }, [_vm._v("দলিলের কপি")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("table", {
+    staticClass: "table"
+  }, [_c("thead", [_c("tr", [_c("th", {
+    attrs: {
+      width: "75%"
+    }
+  }, [_vm._v("পাতা")]), _vm._v(" "), _c("th", {
+    attrs: {
+      width: "25%"
+    }
+  }, [_c("button", {
+    staticClass: "flex justify-start btn btn-info",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.addMore();
+      }
+    }
+  }, [_vm._v("যোগ করুন")])])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.form.land_copy, function (lan, index) {
+    return _c("tr", {
+      key: index
+    }, [_c("td", [_c("div", {
+      staticClass: "form-group"
+    }, [_c("input", {
+      staticClass: "form-control",
+      attrs: {
+        type: "file"
+      },
+      on: {
+        change: function change($event) {
+          return _vm.FileSelectedLoop($event, index);
+        }
+      }
+    })])]), _vm._v(" "), _c("td", [_c("button", {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: index != 0,
+        expression: "index != 0"
+      }],
+      staticClass: "ml-2 btn btn-danger",
+      attrs: {
+        type: "button"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.remove(index);
+        }
+      }
+    }, [_vm._v("মুছন")])])]);
+  }), 0)])])]), _vm._v(" "), _vm._m(9)])])])]), _vm._v(" "), _c("b-modal", {
     attrs: {
       id: _vm.infoModal.id,
       size: "xl",

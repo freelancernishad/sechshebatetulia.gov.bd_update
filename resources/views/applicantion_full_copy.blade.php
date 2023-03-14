@@ -18,7 +18,7 @@
         .text-center{
             text-align: center;
         }
-        
+
             </style>
 
 </head>
@@ -136,7 +136,7 @@ if ($row->applicant_type == 'একক ব্যক্তি') {
 
 
 
-{{-- 
+{{--
 
         <div class="col-md-12 form_title">
             <h5>আবেদনকারীর পাসপোর্ট সাইজের ছবি</h5>
@@ -161,7 +161,7 @@ if ($row->applicant_type == 'একক ব্যক্তি') {
 
 
 
-    
+
 
         <div class="col-md-12 form_title">
             <h5>খতিয়ানের কপি</h5>
@@ -182,7 +182,7 @@ if ($row->applicant_type == 'একক ব্যক্তি') {
             <img width="250px" height="300px" src="{{ base64($row->tax_copy) }}" alt="">
         </div>
 
-     
+
 
         <div class="col-md-12 form_title">
             <h5>নকশা/মৌজা ম্যাপ</h5>
@@ -202,15 +202,20 @@ if ($row->applicant_type == 'একক ব্যক্তি') {
         <div class="col-md-12 text-center">
             <img width="250px" height="300px" src="{{ base64($row->wyarisan) }}" alt="">
         </div>
+        
+        <pagebreak />
 
         <div class="col-md-12 form_title">
             <h5>দলিলের কপি</h5>
         </div>
 
-        <div class="col-md-12 text-center">
-            <img width="250px" height="300px" src="{{ base64($row->land_copy) }}" alt="">
+        @foreach (json_decode($row->land_copy) as $image)
+
+        <div class="col-md-12 text-center" style="margin-top:10px">
+            <img width="100%"  src="{{ base64($image) }}" alt="">
         </div>
 
+        @endforeach
 
 
     </div>

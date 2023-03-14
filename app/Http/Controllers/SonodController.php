@@ -349,6 +349,19 @@ class SonodController extends Controller
         $id = $r->id;
         $data = $r->except(['passport_size_mage','nid_copy','land_copy','khotiyan_copy','tax_copy','map','wyarisan']);
 
+        // return $r->land_copy;
+
+        $land_copy = [];
+        foreach ($r->land_copy as $value) {
+            $land_copyCount =  count(explode(';', $value));
+            if ($land_copyCount > 1) {
+              array_push($land_copy,fileupload($value, "sonod/land_copy/"));
+            }
+        }
+        $data['land_copy'] = json_encode($land_copy);
+
+
+
         $passport_size_mageCount =  count(explode(';', $r->passport_size_mage));
         if ($passport_size_mageCount > 1) {
             $data['passport_size_mage'] =  fileupload($r->passport_size_mage, "sonod/passport_size_mage/");
@@ -359,10 +372,7 @@ class SonodController extends Controller
             $data['nid_copy'] =  fileupload($r->nid_copy, "sonod/nid_copy/");
         }
 
-        $land_copyCount =  count(explode(';', $r->land_copy));
-        if ($land_copyCount > 1) {
-            $data['land_copy'] =  fileupload($r->land_copy, "sonod/land_copy/");
-        }
+
 
         $khotiyan_copyCount =  count(explode(';', $r->khotiyan_copy));
         if ($khotiyan_copyCount > 1) {
@@ -795,9 +805,22 @@ class SonodController extends Controller
         $sondId = $request->id_no;
 
         if ($sondId) {
+
+
+
+
+
+
+
+        return aplication::orWhere('appicant_name', 'like', "%$sondId%")
+        ->orWhere('mobile_number', 'like', "%$sondId%")
+        ->paginate(20);
+
+
+
             // return $sondId;
             // return 'sss';
-            return aplication::where(['status'=>$stutus])->where("id_no", "LIKE", "%$sondId%")->orderBy('id', 'DESC')->paginate(20);
+            // return aplication::where(['status'=>$stutus])->where("id_no", "LIKE", "%$sondId%")->orderBy('id', 'DESC')->paginate(20);
         }
         if ($unioun_name) {
             if ($payment_status) {
