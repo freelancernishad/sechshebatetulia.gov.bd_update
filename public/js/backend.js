@@ -7329,13 +7329,11 @@ var render = function render() {
         href: "/license/" + item.id,
         target: "_blank"
       }
-    }, [_vm._v("লাইসেন্সে ডাউনলোড করুন")]) : _vm._e(), _vm._v(" "), item.status == "approved" ? _c("a", {
-      staticClass: "btn btn-success",
-      attrs: {
-        href: "/l/f/" + item.id + "?f=l",
-        target: "_blank"
-      }
-    }, [_vm._v("Test pay")]) : _vm._e(), _vm._v(" "), item.status == "canceled" ? _c("a", {
+    }, [_vm._v("লাইসেন্সে ডাউনলোড করুন")]) : _vm._e(), _vm._v(" "), item.payment_status == "Unpaid" ? _c("span", {
+      staticClass: "btn btn-danger"
+    }, [_vm._v("Unpaid")]) : item.payment_status == "Paid" ? _c("span", {
+      staticClass: "btn btn-success"
+    }, [_vm._v("Paid")]) : _vm._e(), _vm._v(" "), item.status == "canceled" ? _c("a", {
       staticClass: "btn btn-danger",
       attrs: {
         href: "/dashboard/application/delete/" + item.id

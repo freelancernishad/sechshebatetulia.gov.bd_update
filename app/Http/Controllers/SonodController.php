@@ -1402,7 +1402,10 @@ if ($sonod_name == 'ওয়ারিশান সনদ') {
 
 
         if($status=='approved'){
-            $des = "অনলাইন সেচ সেবায় আপনার আবেদনটি অনুমোদিত হয়েছে। লাইসেন্স প্রাপ্তির জন্য লিংকে গিয়ে নির্ধারিত ফি পরিশোধ করুন";
+
+            $patmenturl = asset("/l/f/$id?f=l");
+
+            $des = "অনলাইন সেচ সেবায় আপনার আবেদনটি অনুমোদিত হয়েছে। লাইসেন্স প্রাপ্তির জন্য লিংকে গিয়ে নির্ধারিত ফি পরিশোধ করুন $patmenturl";
               $mobile = int_bn_to_en($aplication->mobile_number);
             SmsNocSmsSend($des,"$mobile");
          }

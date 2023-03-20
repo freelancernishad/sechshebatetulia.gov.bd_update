@@ -118,8 +118,12 @@
                                 <span v-if="item.status=='processied'"  @click="approve('/api/application/status', item, 'canceled','আবেদনটি বাতিল করতে চান!','আবেদনটি বাতিল হয়েছে!', $event.target)"  class="btn btn-warning">বাতিল</span>
 
 
+
                                     <a  v-if="item.status=='approved'" :href="'/license/'+item.id" target="_blank" class="btn btn-success">লাইসেন্সে ডাউনলোড করুন</a>
-                                    <a  v-if="item.status=='approved'" :href="'/l/f/'+item.id+'?f=l'" target="_blank" class="btn btn-success">Test pay</a>
+
+                                    <span v-if="item.payment_status=='Unpaid'" class="btn btn-danger">Unpaid</span>
+                                    <span v-else-if="item.payment_status=='Paid'"  class="btn btn-success">Paid</span>
+                                    <!-- <a  v-if="item.status=='approved'" :href="'/l/f/'+item.id+'?f=l'" target="_blank" class="btn btn-success">Test pay</a> -->
 
 
                                 <a  v-if="item.status=='canceled'" :href="'/dashboard/application/delete/'+item.id" class="btn btn-danger">Delete</a>
