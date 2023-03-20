@@ -33,16 +33,18 @@ class PaymentController extends Controller
                 'status' => 'Paid',
                 'method' => $data['pi_det_info']['pi_name'],
             ];
-            $updateData = ['status' => 'unknown'];
-            if($sonod_type=='application'){
+
+            if($sonod_type=='application_fee'){
                 $updateData = ['status' => 'pending'];
             }if($sonod_type=='license_fee'){
                 $updateData = ['payment_status' => 'Paid'];
+            }else{
+                $updateData = ['status' => 'unknown'];
             }
             $sonod->update($updateData);
         } else {
             $updateData = ['status' => 'unknown'];
-            if($sonod_type=='application'){
+            if($sonod_type=='application_fee'){
                 $updateData = ['status' => 'Failed'];
             }if($sonod_type=='license_fee'){
                 $updateData = ['payment_status' => 'Failed'];
