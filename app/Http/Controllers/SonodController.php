@@ -77,7 +77,7 @@ class SonodController extends Controller
                 <div style='text-align:center'>
                 <h1 style='text-align:center'>Payment Failed</h1>
                 <a href='/' style='border:1px solid black;padding:10px 12px; background:red;color:white'>Back To Home</a>
-                <a href='$sonod->id' style='border:1px solid black;padding:10px 12px; background:green;color:white'>Pay Again</a>
+                <a href='$tryagain' style='border:1px solid black;padding:10px 12px; background:green;color:white'>Pay Again</a>
                 </div>
                 ";
             }
