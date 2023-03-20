@@ -47,7 +47,18 @@ class SonodController extends Controller
 
             if($payment->status=='Paid'){
                 $InvoiceUrl =  url("/invoice/c/$id");
-                return view('applicationSuccess', compact('payment', 'sonod'));
+
+                if($payment->sonod_type=='application_fee'){
+
+                    return view('applicationSuccess', compact('payment', 'sonod'));
+
+                }else if($payment->sonod_type=='license_fee'){
+
+                    return view('LisenceSuccess', compact('payment', 'sonod'));
+
+                }
+
+
             }else{
                 echo "
                 <div style='text-align:center'>
@@ -206,13 +217,14 @@ class SonodController extends Controller
 
         $data['licence_no'] = $this->sonod_id();
 
-        // return $r->land_copy;
-
+        // return count($r->land_copy);
         $land_copy = [];
-        foreach ($r->land_copy as $value) {
-            $land_copyCount =  count(explode(';', $value));
-            if ($land_copyCount > 1) {
-              array_push($land_copy,fileupload($value, "sonod/land_copy/"));
+        if($r->land_copy){
+            foreach ($r->land_copy as $value) {
+                $land_copyCount =  count(explode(';', $value));
+                if ($land_copyCount > 1) {
+                    array_push($land_copy,fileupload($value, "sonod/land_copy/"));
+                }
             }
         }
         $data['land_copy'] = json_encode($land_copy);

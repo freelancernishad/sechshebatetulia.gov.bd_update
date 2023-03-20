@@ -23,11 +23,45 @@ class fronendController extends Controller
     {
 
 
+
+
+
+
         ini_set('max_execution_time', '60000');
         ini_set("pcre.backtrack_limit", "5000000000000000050000000000000000");
         ini_set('memory_limit', '12008M');
 
+        $apllicationCount = aplication::where('id',$id)->count();
+        if($apllicationCount>0){
+
+
+
         $row = aplication::where('id',$id)->first();
+
+        if($row->status!='approved'){
+            echo "
+            <div style='width:80%;margin:0 auto;text-align: center;'>
+                <h1 style='color:red;text-align:center'>গভীর/অগভীর নলকূপ স্থাপনের এই লাইসেন্সের আবেদনটি এখনো অনুমোদিত হয়নি</h1>
+            <div>
+            ";
+            return;
+        }
+        if($row->payment_status=='Unpaid'){
+            echo "
+            <div style='width:80%;margin:0 auto;text-align: center;'>
+                <h1 style='color:red;text-align:center'>গভীর/অগভীর নলকূপ স্থাপনের এই লাইসেন্সের আবেদনটি অনুমোদিত হয়েছে। কিন্তু ফি প্রদান করা হয়নি। দয়া করে লাইসেন্সটির ফি প্রদান করুন</h1>
+                <a href='/l/f/$row->id?f=l' style='background: #002bff;
+                color: white;
+                padding: 12px 12px;
+                font-size: 30px;
+                text-decoration: none;'>ফি প্রদান করুন</a>
+            </div>
+            ";
+            return;
+        }
+
+
+
 
     //in Controller
 
@@ -48,8 +82,14 @@ class fronendController extends Controller
 
         $pdf = PDF::loadView('license',compact('row','image','gov_logos','mojib_logos','badc_logos','qrcode','licence_no'));
         return $pdf->stream("sechsheba-77190$licence_no.pdf");
-
         //  return view('license',$data);
+    }else{
+        echo "
+        <div style='width:80%;margin:0 auto;text-align: center;'>
+            <h1 style='color:red;text-align:center'>কোনো গভীর/অগভীর নলকূপ স্থাপনের লাইসেন্স খুজে পাওয়া যায়নি</h1>
+        <div>
+        ";
+    }
     }
 
 

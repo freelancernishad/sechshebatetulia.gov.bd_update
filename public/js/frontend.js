@@ -2592,7 +2592,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         khotiyan_copy: '',
         tax_copy: '',
         map: '',
-        wyarisan: ''
+        wyarisan: '',
+        status: 'Prepaid'
       },
       sameStatus: "",
       getdivisions: {},
@@ -2791,62 +2792,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     finalSubmit: function finalSubmit() {
       var _this8 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
         var res, datas;
-        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 _this8.submitLoad = true;
-                _context7.next = 3;
+                _context6.next = 3;
                 return _this8.callApi("post", "/api/sonod/submit", _this8.form);
 
               case 3:
-                res = _context7.sent;
+                res = _context6.sent;
                 datas = res.data;
-                Swal.fire({
-                  title: "অভিনন্দন",
-                  text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u0986\u09AC\u09C7\u09A6\u09A8\u099F\u09BF \u09B8\u09AB\u09B2\u09AD\u09BE\u09AC\u09C7 \u09A6\u09BE\u0996\u09BF\u09B2 \u09B9\u09DF\u09C7\u099B\u09C7",
-                  icon: "success",
-                  confirmButtonColor: "green",
-                  confirmButtonText: "\u0986\u09AC\u09C7\u09A6\u09A8\u09AA\u09A4\u09CD\u09B0 \u09A1\u09BE\u0989\u09A8\u09B2\u09CB\u09A1",
-                  allowOutsideClick: false,
-                  allowEscapeKey: false
-                }).then( /*#__PURE__*/function () {
-                  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(result) {
-                    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-                      while (1) {
-                        switch (_context6.prev = _context6.next) {
-                          case 0:
-                            if (result.isConfirmed) {
-                              window.location.href = "/apllication/document/".concat(datas.id);
-                            } else if (result.isDenied) {} else if (result.isDismissed) {
-                              _this8.$router.push({
-                                name: "home"
-                              });
-                            }
 
-                            _this8.submitLoad = false;
+                if (res.status == 201) {
+                  window.location.href = "/l/f/".concat(datas.id, "?f=a");
+                } //   Swal.fire({
+                //     title: "অভিনন্দন",
+                //     text: `আপনার আবেদনটি সফলভাবে দাখিল হয়েছে`,
+                //     icon: "success",
+                //     confirmButtonColor: "green",
+                //     confirmButtonText: `আবেদনপত্র ডাউনলোড`,
+                //     allowOutsideClick: false,
+                //     allowEscapeKey: false,
+                //   }).then(async (result) => {
+                //     if (result.isConfirmed) {
+                //     window.location.href=`/apllication/document/${datas.id}`
+                //     } else if (result.isDenied) {
+                //     } else if (result.isDismissed) {
+                //       this.$router.push({ name: "home" });
+                //     }
+                //     this.submitLoad = false
+                //   });
 
-                          case 2:
-                          case "end":
-                            return _context6.stop();
-                        }
-                      }
-                    }, _callee6);
-                  }));
-
-                  return function (_x) {
-                    return _ref.apply(this, arguments);
-                  };
-                }());
 
               case 6:
               case "end":
-                return _context7.stop();
+                return _context6.stop();
             }
           }
-        }, _callee7);
+        }, _callee6);
       }))();
     }
   },
@@ -6974,7 +6960,8 @@ var render = function render() {
     }, [_c("input", {
       staticClass: "form-control",
       attrs: {
-        type: "file"
+        type: "file",
+        required: ""
       },
       on: {
         change: function change($event) {

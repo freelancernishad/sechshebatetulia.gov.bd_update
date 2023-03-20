@@ -631,7 +631,7 @@
                                             <tr v-for="(lan, index) in form.land_copy" :key="index">
                                             <td>
                                                 <div class="form-group">
-                                                    <input type="file" class="form-control" @change="FileSelectedLoop($event, index)">
+                                                    <input type="file" class="form-control" @change="FileSelectedLoop($event, index)" required>
 
                                                 </div>
                                         </td>
@@ -773,6 +773,7 @@ export default {
         tax_copy:'',
         map:'',
         wyarisan:'',
+        status:'Prepaid',
       },
 
       sameStatus: "",
@@ -880,25 +881,31 @@ export default {
       var res = await this.callApi("post", "/api/sonod/submit", this.form);
       var datas = res.data;
 
-      Swal.fire({
-        title: "অভিনন্দন",
-        text: `আপনার আবেদনটি সফলভাবে দাখিল হয়েছে`,
-        icon: "success",
-        confirmButtonColor: "green",
-        confirmButtonText: `আবেদনপত্র ডাউনলোড`,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-        window.location.href=`/apllication/document/${datas.id}`
-        } else if (result.isDenied) {
+      if(res.status==201){
+        window.location.href=`/l/f/${datas.id}?f=a`
+      }
 
-        } else if (result.isDismissed) {
-          this.$router.push({ name: "home" });
-        }
-        this.submitLoad = false
 
-      });
+
+    //   Swal.fire({
+    //     title: "অভিনন্দন",
+    //     text: `আপনার আবেদনটি সফলভাবে দাখিল হয়েছে`,
+    //     icon: "success",
+    //     confirmButtonColor: "green",
+    //     confirmButtonText: `আবেদনপত্র ডাউনলোড`,
+    //     allowOutsideClick: false,
+    //     allowEscapeKey: false,
+    //   }).then(async (result) => {
+    //     if (result.isConfirmed) {
+    //     window.location.href=`/apllication/document/${datas.id}`
+    //     } else if (result.isDenied) {
+
+    //     } else if (result.isDismissed) {
+    //       this.$router.push({ name: "home" });
+    //     }
+    //     this.submitLoad = false
+
+    //   });
 
 
 
