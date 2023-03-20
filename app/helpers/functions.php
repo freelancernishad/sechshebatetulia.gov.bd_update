@@ -5,6 +5,7 @@ use App\Models\Visitor;
 use App\Models\Uniouninfo;
 use App\Models\Sonodnamelist;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
@@ -125,6 +126,8 @@ curl_close($curl);
 
         // 148.163.122.80
         $post = json_encode($post);
+
+        Log::info($post);
 
         $ch = curl_init('https://sandbox.ekpay.gov.bd/ekpaypg/v1/merchant-api');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

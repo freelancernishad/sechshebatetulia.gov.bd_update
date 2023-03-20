@@ -18,6 +18,7 @@ class PaymentController extends Controller
 
     public function ipn(Request $request)
     {
+        Log::info('load');
         $data = $request->all();
         Log::info(json_encode($data));
         $sonod = aplication::find($data['cust_info']['cust_id']);
