@@ -91,7 +91,7 @@ curl_close($curl);
 
     function ekpayToken($trnx_id=123456789,$trnx_amt=0,$cust_info=[],$path='payment'){
 
-         $url = "http://" . $_SERVER['HTTP_HOST'];
+         $url = "https://" . $_SERVER['HTTP_HOST'];
         $req_timestamp = date('Y-m-d H:i:s');
 
 
