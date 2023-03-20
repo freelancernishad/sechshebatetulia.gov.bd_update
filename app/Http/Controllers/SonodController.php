@@ -60,11 +60,24 @@ class SonodController extends Controller
 
 
             }else{
+
+                $tryagain = '';
+
+                if($payment->sonod_type=='application_fee'){
+
+                   $tryagain = "/l/f/$sonod->id?f=a";
+
+                }else if($payment->sonod_type=='license_fee'){
+
+                    $tryagain = "/l/f/$sonod->id?f=l";
+
+                }
+
                 echo "
                 <div style='text-align:center'>
                 <h1 style='text-align:center'>Payment Failed</h1>
                 <a href='/' style='border:1px solid black;padding:10px 12px; background:red;color:white'>Back To Home</a>
-                <a href='/sonod/payment/$sonod->id' style='border:1px solid black;padding:10px 12px; background:green;color:white'>Pay Again</a>
+                <a href='$sonod->id' style='border:1px solid black;padding:10px 12px; background:green;color:white'>Pay Again</a>
                 </div>
                 ";
             }
