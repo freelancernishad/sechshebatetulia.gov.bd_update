@@ -123,7 +123,7 @@ Route::post('sonod/search',[SonodController::class, 'sonod_search']);
 
 
 
-Route::post('/ipn',[PaymentController::class ,'ipn']);
+Route::post('ipn',[PaymentController::class ,'ipn']);
 // Route::post('/re/call/ipn',[PaymentController::class ,'ReCallIpn']);
 // Route::post('/check/payments/ipn',[PaymentController::class ,'AkpayPaymentCheck']);
 
