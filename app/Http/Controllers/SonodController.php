@@ -228,7 +228,7 @@ class SonodController extends Controller
         $id = $r->id;
         $data = $r->except(['passport_size_mage','nid_copy','land_copy','khotiyan_copy','tax_copy','map','wyarisan']);
 
-        $data['licence_no'] = $this->sonod_id();
+        $data['licence_no'] = (string)$this->sonod_id();
 
         // return count($r->land_copy);
         $land_copy = [];
