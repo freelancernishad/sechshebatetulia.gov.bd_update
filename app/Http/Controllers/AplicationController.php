@@ -51,7 +51,7 @@ $data['rows'] = DB::table('aplications')->where('id',$id)->get();
 
             $row = application_repprt::where('license_id',$id)->first();
 
-                    $map = base64($row->hand_map);
+                    $map = base64('backend/image.png');
 
 
                     $pdf = PDF::loadView('report',compact('row','map'));
