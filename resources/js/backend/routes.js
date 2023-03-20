@@ -11,7 +11,7 @@ let home = require('./components/home.vue').default;
 
 
 let profile = require('./components/profile.vue').default;
-
+let report = require('./components/report.vue').default;
 
 
 
@@ -54,7 +54,7 @@ export const routes = [
   { path:  `${prefix}`, component: home, name:'Dashboard',meta: { layout: adminlayout } },
   { path:  `${prefix}/profile`, component: profile, name:'profile',meta: { layout: adminlayout } },
 
-
+  { path:  `${prefix}/report`, component: report, name:'report',meta: { layout: adminlayout } },
 
 
 

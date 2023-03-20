@@ -121,7 +121,8 @@ Route::get('sonod/{action}/{id}',[SonodController::class, 'sonod_action']);
 Route::get('sonod/sonod_Id',[SonodController::class, 'sonod_id']);
 Route::post('sonod/search',[SonodController::class, 'sonod_search']);
 
-
+Route::get('payment/report/search',[PaymentController::class,'Search']);
+Route::post('payment/report/search',[PaymentController::class,'Search']);
 
 Route::post('ipn',[PaymentController::class ,'ipn']);
 // Route::post('/re/call/ipn',[PaymentController::class ,'ReCallIpn']);

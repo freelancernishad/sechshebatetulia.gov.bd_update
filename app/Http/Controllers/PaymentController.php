@@ -41,7 +41,7 @@ class PaymentController extends Controller
             }else{
                 $updateData = ['status' => 'unknown'];
             }
-            
+
             $sonod->update($updateData);
         } else {
             if($sonod_type=='application_fee'){
@@ -79,29 +79,15 @@ class PaymentController extends Controller
 
 
 
-        if($sonod_type && $from && $to){
-            if($sonod_type=='all'){
-            // return Payment::where(['status'=>'Paid'])->whereBetween('date', [$from, $to])->orderBy('id','desc')->get();
-            $row = Payment::with(['sonod'])->where(['union'=>$union,'status'=>'Paid'])->whereBetween('date', [$from, $to])->orderBy('id','desc')->get();
-            }else{
-                 $row = Payment::with(['sonod'])->where(['union'=>$union,'sonod_type'=>$sonod_type,'status'=>'Paid'])->whereBetween('date', [$from, $to])->orderBy('id','desc')->get();
-            }
+        if($from && $to){
 
-        $uniouninfo = Uniouninfo::where(['short_name_e' => $union])->first();
-        $pdf = LaravelMpdf::loadView('Export',compact('row','uniouninfo','sonod_type','from','to'));
+         $row = Payment::where(['status'=>'Paid'])->whereBetween('date', [$from, $to])->orderBy('id','desc')->get();
+        $pdf = LaravelMpdf::loadView('Export',compact('row','from','to'));
         return $pdf->stream("hlsdfhlo.pdf");
 
         }
 
-        if($sonod_type=='all'){
-            $row = Payment::with(['sonod'])->where(['union'=>$union,'status'=>'Paid'])->orderBy('id','desc')->get();
-        }
-        $row = Payment::with(['sonod'])->where(['union'=>$union,'sonod_type'=>$sonod_type,'status'=>'Paid'])->orderBy('id','desc')->get();
-        // return Excel::download($export, 'report.xlsx');
 
-        $uniouninfo = Uniouninfo::where(['short_name_e' => $union])->first();
-        $pdf = LaravelMpdf::loadView('Export',compact('row','uniouninfo','sonod_type','from','to'));
-        return $pdf->stream("hlsdfhlo.pdf");
 
 
 
@@ -118,52 +104,18 @@ class PaymentController extends Controller
         $to = $request->to;
         $union = $request->union;
 
-        if($union){
-
 
             if($from && $to){
-                if($sonod_type=='all'){
 
-
-                    return Payment::where(['union'=>$union,'status'=>'Paid'])->whereBetween('date', [$from, $to])->orderBy('id','desc')->get();
-                }
-                return Payment::where(['union'=>$union,'sonod_type'=>$sonod_type,'status'=>'Paid'])->whereBetween('date', [$from, $to])->orderBy('id','desc')->get();
-
-            }elseif($from){
-                if($sonod_type=='all'){
-                return Payment::where(['union'=>$union,'status'=>'Paid'])->where('date',$from)->orderBy('id','desc')->get();
-                }
-                return Payment::where(['union'=>$union,'sonod_type'=>$sonod_type,'status'=>'Paid'])->where('date',$from)->orderBy('id','desc')->get();
-
-            }else{
-                if($sonod_type=='all'){
-                return Payment::where(['union'=>$union,'status'=>'Paid'])->orderBy('id','desc')->get();
-                }
-                return Payment::where(['union'=>$union,'sonod_type'=>$sonod_type,'status'=>'Paid'])->orderBy('id','desc')->get();
-
-            }
-        }else{
-
-            if($from && $to){
-                if($sonod_type=='all'){
                 return Payment::where(['status'=>'Paid'])->whereBetween('date', [$from, $to])->orderBy('id','desc')->get();
-                }
-                return Payment::where(['sonod_type'=>$sonod_type,'status'=>'Paid'])->whereBetween('date', [$from, $to])->orderBy('id','desc')->get();
-
             }elseif($from){
-                if($sonod_type=='all'){
                 return Payment::where(['status'=>'Paid'])->where('date',$from)->orderBy('id','desc')->get();
-                }
-                return Payment::where(['sonod_type'=>$sonod_type,'status'=>'Paid'])->where('date',$from)->orderBy('id','desc')->get();
-
             }else{
-                if($sonod_type=='all'){
+
                 return Payment::where(['status'=>'Paid'])->orderBy('id','desc')->get();
-                }
-                return Payment::where(['sonod_type'=>$sonod_type,'status'=>'Paid'])->orderBy('id','desc')->get();
 
             }
-        }
+
 
     }
 

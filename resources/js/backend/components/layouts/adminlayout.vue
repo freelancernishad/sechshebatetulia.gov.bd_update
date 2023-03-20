@@ -115,6 +115,11 @@
 
 
 
+                        <li class="nav-item" @click="submenu(0)">
+                            <router-link :to="{ name: 'report' }" class="nav-link"><i
+                                    class="flaticon-dashboard"></i><span>সকল প্রতিবেদন</span></router-link>
+                        </li>
+
                         <li class="nav-item" @click="submenu(0)" v-if="this.$localStorage.getItem('position') == 'admin'">
                                 <router-link :to="{ name: 'applicationlist', params:{type:'pending'} }" class="nav-link"><i
                                     class="flaticon-dashboard"></i><span>নতুন আবেদন</span></router-link>
