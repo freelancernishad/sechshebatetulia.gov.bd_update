@@ -916,17 +916,16 @@ class SonodController extends Controller
     }
     public function sonod_search(Request $request)
     {
-        $sonodcount =  Sonod::where(['sonod_name' => $request->sonod_name, 'sonod_Id' => $request->sonod_Id, 'stutus' => 'approved'])->count();
+        $sonodcount =  aplication::where(['licence_no' => $request->sonod_Id, 'status' => 'approved'])->count();
         if ($sonodcount > 0) {
-            $Sonodnamelist =  Sonodnamelist::where(['bnname' => $request->sonod_name])->first();
-            $sonod =  Sonod::where(['sonod_name' => $request->sonod_name, 'sonod_Id' => $request->sonod_Id, 'stutus' => 'approved'])->first();
-            $sonod['sonodUrl'] = "/sonod/$Sonodnamelist->enname/$sonod->id";
+            $sonod =  aplication::where(['licence_no' => $request->sonod_Id, 'status' => 'approved'])->first();
+            $sonod['sonodUrl'] = "/license/$sonod->id";
             $sonod['searchstatus'] = "approved";
             return  $sonod;
         } else {
-            $sonodcountall =  Sonod::where(['sonod_name' => $request->sonod_name, 'sonod_Id' => $request->sonod_Id])->count();
+            $sonodcountall =  aplication::where(['licence_no' => $request->sonod_Id])->count();
             if ($sonodcountall > 0) {
-                $sonod =   Sonod::where(['sonod_name' => $request->sonod_name, 'sonod_Id' => $request->sonod_Id])->first();
+                $sonod =   aplication::where(['licence_no' => $request->sonod_Id])->first();
                 $sonod['searchstatus'] = "all";
                 return $sonod;
             }
@@ -937,7 +936,7 @@ class SonodController extends Controller
     {
         $admin = $request->admin;
         if($admin){
-            $sonod =  Sonod::find($id);
+            $sonod =  aplication::find($id);
 
             $sonod['image'] = asset($sonod->image);
             $sonod['applicant_national_id_front_attachment'] = asset($sonod->applicant_national_id_front_attachment);
@@ -950,7 +949,7 @@ class SonodController extends Controller
             ];
         }
 
-        return Sonod::find($id);
+        return aplication::find($id);
     }
     public function totlaAmount(Request $request)
     {
@@ -1335,12 +1334,11 @@ if ($sonod_name == 'ওয়ারিশান সনদ') {
 
     public function verifysonodId(Request $request)
     {
-        $sonod_name = $request->sonod_name;
-        $sonod_name = Sonodnamelist::where(['enname'=>$sonod_name])->first()->bnname;
+
         $sonod_Id = $request->sonod_Id;
 
 
-        return Sonod::where(['sonod_name'=>$sonod_name,'sonod_Id'=>$sonod_Id])->first();
+        return aplication::where(['licence_no'=>$sonod_Id])->first();
 
         // return $request->all();
     }

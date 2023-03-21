@@ -5,8 +5,7 @@
                 <div class="col-md-12 p-sm-0">
 
 
-                    <form id="msform">
-                        <!-- progressbar -->
+                    <!-- <form id="msform">
                         <ul id="progressbar">
                             <li :class="{ active: aplication }" id="account"><strong>আবেদন জমা হয়েছে</strong></li>
                             <li :class="{ active: payment }" id="personal"><strong>পেমেন্ট</strong></li>
@@ -15,7 +14,7 @@
                             <li :class="{ active: complate }" id="confirm"><strong>কমপ্লিট</strong></li>
 
                         </ul>
-                    </form>
+                    </form> -->
 
 
 
@@ -24,9 +23,9 @@
                         <div class="col-md-12 p-sm-0">
                             <div class="text-right mb-2 no-print">
 
-                                <a :href="'/sonod/d/'+row.id" v-if="row.payment_status=='Paid'" target="_blank" class="btn btn-sm btn-success">Download</a>
+                                <a :href="'/license/'+row.id" v-if="row.payment_status=='Paid'" target="_blank" class="btn btn-sm btn-success">Download</a>
 
-                                <a :href="'/sonod/d/'+row.id" v-if="row.payment_status=='Unpaid'" target="_blank" class="btn btn-sm btn-success">Pay</a>
+                                <!-- <a :href="'/sonod/d/'+row.id" v-if="row.payment_status=='Unpaid'" target="_blank" class="btn btn-sm btn-success">Pay</a> -->
 
                             </div>
                             <div class="border">
@@ -62,7 +61,7 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                    {{ row.sonod_Id }}
+                                                    {{ row.licence_no }}
                                                 </div>
                                             </div>
                                         </div>
@@ -74,7 +73,7 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                     {{ row.applicant_national_id_number }}
+                                                     {{ row.nid_no }}
                                                 </div>
                                             </div>
                                         </div>
@@ -110,7 +109,9 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                    {{ row.applicant_name }}
+                                                <span class="sonodTd" v-if="row.applicant_type=='একক ব্যক্তি'">{{ row.appicant_name }}</span>
+                                                <span class="sonodTd" v-else-if="row.applicant_type=='সমবায় সমিতি/প্রতিষ্ঠান'">{{ row.gostir_name }}</span>
+                                                <span class="sonodTd" v-else-if="row.applicant_type=='একটি গোষ্ঠী'">{{ row.appicant_sumiti_name }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -152,7 +153,7 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                    11-10-2021
+                                                    {{ row.approved_date }}
                                                 </div>
                                             </div>
                                         </div>
@@ -164,7 +165,7 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                     {{ row.sonod_name }}
+                                                    গভীর/অগভীর নলকূপ স্থাপনের লাইসেন্স
                                                 </div>
                                             </div>
                                         </div>
@@ -176,7 +177,7 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                    14-11-2021
+
                                                 </div>
                                             </div>
                                         </div>
@@ -200,7 +201,7 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                      {{ row.unioun_name }}
+
                                                 </div>
                                             </div>
                                         </div>
@@ -212,7 +213,7 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                      {{ row.unioun_name }}
+
                                                 </div>
                                             </div>
                                         </div>
@@ -224,7 +225,7 @@
                                             </div>
                                             <div class="col-6 border-dash">
                                                 <div class="beneficiary-details-left cert-verify-content-div">
-                                                    3
+
                                                 </div>
                                             </div>
                                         </div>
@@ -272,10 +273,10 @@ export default {
 
 
 
-            if(this.$route.query.sonod_name && this.$route.query.sonod_Id){
+            if(this.$route.query.sonod_Id){
                 var sonod_name = this.$route.query.sonod_name;
                 var sonod_Id = this.$route.query.sonod_Id;
-                var res = await this.callApi('get',`/api/sonod/verify/get?sonod_name=${sonod_name}&sonod_Id=${sonod_Id}`);
+                var res = await this.callApi('get',`/api/sonod/verify/get?sonod_Id=${sonod_Id}`);
 
             }else{
                 var id =  this.$route.params.id;

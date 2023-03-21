@@ -4086,7 +4086,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(_this.$route.query.sonod_name && _this.$route.query.sonod_Id)) {
+                if (!_this.$route.query.sonod_Id) {
                   _context.next = 8;
                   break;
                 }
@@ -4094,7 +4094,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 sonod_name = _this.$route.query.sonod_name;
                 sonod_Id = _this.$route.query.sonod_Id;
                 _context.next = 5;
-                return _this.callApi('get', "/api/sonod/verify/get?sonod_name=".concat(sonod_name, "&sonod_Id=").concat(sonod_Id));
+                return _this.callApi('get', "/api/sonod/verify/get?sonod_Id=".concat(sonod_Id));
 
               case 5:
                 res = _context.sent;
@@ -4180,6 +4180,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      searching: false,
       aplication: false,
       payment: false,
       sec: false,
@@ -4237,18 +4238,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                _this.searching = true;
+                _context.next = 3;
                 return _this.callApi('post', "/api/sonod/search", _this.form);
 
-              case 2:
+              case 3:
                 res = _context.sent;
 
                 // console.log(res);
-                if (_this.$route.query.sonod_Id != _this.form.sonod_Id || _this.$route.query.sonod_name != _this.form.sonod_name) {
+                if (_this.$route.query.sonod_Id != _this.form.sonod_Id) {
                   _this.$router.push({
                     name: 'sonodsearch',
                     query: {
-                      sonod_name: _this.form.sonod_name,
                       sonod_Id: _this.form.sonod_Id
                     }
                   }); // console.log('dd')
@@ -4320,7 +4321,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 }
 
-              case 5:
+                _this.searching = false;
+
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -8835,6 +8838,15 @@ var render = function render() {
     staticClass: "nav-link",
     attrs: {
       to: {
+        name: "sonodsearch"
+      }
+    }
+  }, [_vm._v("সনদ\n                                                যাচাই\n                                            ")])], 1), _vm._v(" "), _c("li", {
+    staticClass: "nav-item"
+  }, [_c("router-link", {
+    staticClass: "nav-link",
+    attrs: {
+      to: {
         name: "contact"
       }
     }
@@ -9439,50 +9451,7 @@ var render = function render() {
     staticClass: "row justify-content-center py-8 px-8 py-md-27 px-md-0"
   }, [_c("div", {
     staticClass: "col-md-12 p-sm-0"
-  }, [_c("form", {
-    attrs: {
-      id: "msform"
-    }
-  }, [_c("ul", {
-    attrs: {
-      id: "progressbar"
-    }
-  }, [_c("li", {
-    "class": {
-      active: _vm.aplication
-    },
-    attrs: {
-      id: "account"
-    }
-  }, [_c("strong", [_vm._v("আবেদন জমা হয়েছে")])]), _vm._v(" "), _c("li", {
-    "class": {
-      active: _vm.payment
-    },
-    attrs: {
-      id: "personal"
-    }
-  }, [_c("strong", [_vm._v("পেমেন্ট")])]), _vm._v(" "), _c("li", {
-    "class": {
-      active: _vm.sec
-    },
-    attrs: {
-      id: "payment"
-    }
-  }, [_c("strong", [_vm._v("সেক্রেটারি")])]), _vm._v(" "), _c("li", {
-    "class": {
-      active: _vm.chair
-    },
-    attrs: {
-      id: "confirm"
-    }
-  }, [_c("strong", [_vm._v("চেয়ারম্যান")])]), _vm._v(" "), _c("li", {
-    "class": {
-      active: _vm.complate
-    },
-    attrs: {
-      id: "confirm"
-    }
-  }, [_c("strong", [_vm._v("কমপ্লিট")])])])]), _vm._v(" "), _c("div", {
+  }, [_c("div", {
     staticClass: "d-flex justify-content-between"
   }, [_c("div", {
     staticClass: "col-md-12 p-sm-0"
@@ -9491,16 +9460,10 @@ var render = function render() {
   }, [_vm.row.payment_status == "Paid" ? _c("a", {
     staticClass: "btn btn-sm btn-success",
     attrs: {
-      href: "/sonod/d/" + _vm.row.id,
+      href: "/license/" + _vm.row.id,
       target: "_blank"
     }
-  }, [_vm._v("Download")]) : _vm._e(), _vm._v(" "), _vm.row.payment_status == "Unpaid" ? _c("a", {
-    staticClass: "btn btn-sm btn-success",
-    attrs: {
-      href: "/sonod/d/" + _vm.row.id,
-      target: "_blank"
-    }
-  }, [_vm._v("Pay")]) : _vm._e()]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Download")]) : _vm._e()]), _vm._v(" "), _c("div", {
     staticClass: "border"
   }, [_c("div", {
     staticClass: "row m-0 mt-2"
@@ -9532,13 +9495,13 @@ var render = function render() {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                " + _vm._s(_vm.row.sonod_Id) + "\n                                            ")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                                                " + _vm._s(_vm.row.licence_no) + "\n                                            ")])])]), _vm._v(" "), _c("div", {
     staticClass: "row m-0"
   }, [_vm._m(3), _vm._v(" "), _c("div", {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                 " + _vm._s(_vm.row.applicant_national_id_number) + "\n                                            ")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                                                 " + _vm._s(_vm.row.nid_no) + "\n                                            ")])])]), _vm._v(" "), _c("div", {
     staticClass: "row m-0"
   }, [_vm._m(4), _vm._v(" "), _c("div", {
     staticClass: "col-6 border-dash"
@@ -9550,7 +9513,13 @@ var render = function render() {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                " + _vm._s(_vm.row.applicant_name) + "\n                                            ")])])]), _vm._v(" "), _c("div", {
+  }, [_vm.row.applicant_type == "একক ব্যক্তি" ? _c("span", {
+    staticClass: "sonodTd"
+  }, [_vm._v(_vm._s(_vm.row.appicant_name))]) : _vm.row.applicant_type == "সমবায় সমিতি/প্রতিষ্ঠান" ? _c("span", {
+    staticClass: "sonodTd"
+  }, [_vm._v(_vm._s(_vm.row.gostir_name))]) : _vm.row.applicant_type == "একটি গোষ্ঠী" ? _c("span", {
+    staticClass: "sonodTd"
+  }, [_vm._v(_vm._s(_vm.row.appicant_sumiti_name))]) : _vm._e()])])]), _vm._v(" "), _c("div", {
     staticClass: "row m-0"
   }, [_vm._m(7), _vm._v(" "), _c("div", {
     staticClass: "col-6 border-dash"
@@ -9564,31 +9533,19 @@ var render = function render() {
     staticClass: "beneficiary-details-left cert-verify-content-div"
   }, [_vm._v("\n                                                  " + _vm._s(_vm.row.applicant_gender) + "\n                                            ")])])])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-7 p-0"
-  }, [_vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("div", {
+  }, [_vm._m(9), _vm._v(" "), _c("div", {
     staticClass: "row m-0"
-  }, [_vm._m(11), _vm._v(" "), _c("div", {
+  }, [_vm._m(10), _vm._v(" "), _c("div", {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                 " + _vm._s(_vm.row.sonod_name) + "\n                                            ")])])]), _vm._v(" "), _vm._m(12), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                                                " + _vm._s(_vm.row.approved_date) + "\n                                            ")])])]), _vm._v(" "), _vm._m(11), _vm._v(" "), _vm._m(12), _vm._v(" "), _c("div", {
     staticClass: "row m-0"
   }, [_vm._m(13), _vm._v(" "), _c("div", {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                  " + _vm._s(_vm.row.payment_status) + "\n                                            ")])])]), _vm._v(" "), _c("div", {
-    staticClass: "row m-0"
-  }, [_vm._m(14), _vm._v(" "), _c("div", {
-    staticClass: "col-6 border-dash"
-  }, [_c("div", {
-    staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                  " + _vm._s(_vm.row.unioun_name) + "\n                                            ")])])]), _vm._v(" "), _c("div", {
-    staticClass: "row m-0"
-  }, [_vm._m(15), _vm._v(" "), _c("div", {
-    staticClass: "col-6 border-dash"
-  }, [_c("div", {
-    staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                  " + _vm._s(_vm.row.unioun_name) + "\n                                            ")])])]), _vm._v(" "), _vm._m(16)])])])])])])])])]);
+  }, [_vm._v("\n                                                  " + _vm._s(_vm.row.payment_status) + "\n                                            ")])])]), _vm._v(" "), _vm._m(14), _vm._v(" "), _vm._m(15), _vm._v(" "), _vm._m(16)])])])])])])])])]);
 };
 
 var staticRenderFns = [function () {
@@ -9686,25 +9643,25 @@ var staticRenderFns = [function () {
       _c = _vm._self._c;
 
   return _c("div", {
-    staticClass: "row m-0"
-  }, [_c("div", {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-right cert-verify-content-div"
-  }, [_vm._v("\n                                                Date of Certificate Issue):"), _c("br"), _vm._v("সনদ প্রদানের\n                                                তারিখ :\n                                            ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-6 border-dash"
-  }, [_c("div", {
-    staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                11-10-2021\n                                            ")])])]);
+  }, [_vm._v("\n                                                Date of Certificate Issue):"), _c("br"), _vm._v("সনদ প্রদানের\n                                                তারিখ :\n                                            ")])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
 
   return _c("div", {
+    staticClass: "row m-0"
+  }, [_c("div", {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-right cert-verify-content-div"
-  }, [_vm._v("\n                                                Name of Certificate:"), _c("br"), _vm._v("সনদের নাম:\n                                            ")])]);
+  }, [_vm._v("\n                                                Name of Certificate:"), _c("br"), _vm._v("সনদের নাম:\n                                            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-6 border-dash"
+  }, [_c("div", {
+    staticClass: "beneficiary-details-left cert-verify-content-div"
+  }, [_vm._v("\n                                                গভীর/অগভীর নলকূপ স্থাপনের লাইসেন্স\n                                            ")])])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
@@ -9719,7 +9676,7 @@ var staticRenderFns = [function () {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                14-11-2021\n                                            ")])])]);
+  })])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
@@ -9734,19 +9691,31 @@ var staticRenderFns = [function () {
       _c = _vm._self._c;
 
   return _c("div", {
+    staticClass: "row m-0"
+  }, [_c("div", {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-right cert-verify-content-div"
-  }, [_vm._v("\n                                                Certification Union:"), _c("br"), _vm._v("সনদ প্রদানের ইউনিয়ন:\n                                            ")])]);
+  }, [_vm._v("\n                                                Certification Union:"), _c("br"), _vm._v("সনদ প্রদানের ইউনিয়ন:\n                                            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-6 border-dash"
+  }, [_c("div", {
+    staticClass: "beneficiary-details-left cert-verify-content-div"
+  })])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
 
   return _c("div", {
+    staticClass: "row m-0"
+  }, [_c("div", {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-right cert-verify-content-div"
-  }, [_vm._v("\n                                                Certifier By:"), _c("br"), _vm._v("সনদ প্রদানকারী:\n                                            ")])]);
+  }, [_vm._v("\n                                                Certifier By:"), _c("br"), _vm._v("সনদ প্রদানকারী:\n                                            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-6 border-dash"
+  }, [_c("div", {
+    staticClass: "beneficiary-details-left cert-verify-content-div"
+  })])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
@@ -9761,7 +9730,7 @@ var staticRenderFns = [function () {
     staticClass: "col-6 border-dash"
   }, [_c("div", {
     staticClass: "beneficiary-details-left cert-verify-content-div"
-  }, [_vm._v("\n                                                3\n                                            ")])])]);
+  })])]);
 }];
 render._withStripped = true;
 
@@ -9805,48 +9774,7 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("সনদের ধরন নির্বাচন করুন")]), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.form.sonod_name,
-      expression: "form.sonod_name"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      id: "sonod",
-      required: ""
-    },
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-
-        _vm.$set(_vm.form, "sonod_name", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: ""
-    }
-  }, [_vm._v("চিহ্নিত করুন")]), _vm._v(" "), _vm._l(_vm.SonodNames, function (sonod, r) {
-    return _c("option", {
-      key: "dropdown" + r,
-      domProps: {
-        value: sonod.bnname
-      }
-    }, [_vm._v(_vm._s(sonod.bnname))]);
-  })], 2)]), _vm._v(" "), _c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("ইস্যুকৃত সনদ নম্বর লিখুন")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("ইস্যুকৃত লাইসেন্স নম্বর লিখুন")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -9869,54 +9797,22 @@ var render = function render() {
         _vm.$set(_vm.form, "sonod_Id", $event.target.value);
       }
     }
-  })]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _vm.search && _vm.notfound == false ? _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12 mx-0"
-  }, [_c("form", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "form-group text-center"
+  }, [!_vm.searching ? _c("input", {
+    staticClass: "btn btn-info",
     attrs: {
-      id: "msform"
+      type: "submit",
+      value: "Search"
     }
-  }, [_c("ul", {
+  }) : _c("input", {
+    staticClass: "btn btn-info",
     attrs: {
-      id: "progressbar"
+      type: "button",
+      disabled: "",
+      value: "Searching"
     }
-  }, [_c("li", {
-    "class": {
-      active: _vm.aplication
-    },
-    attrs: {
-      id: "account"
-    }
-  }, [_c("strong", [_vm._v("আবেদন জমা হয়েছে")])]), _vm._v(" "), _c("li", {
-    "class": {
-      active: _vm.payment
-    },
-    attrs: {
-      id: "personal"
-    }
-  }, [_c("strong", [_vm._v("পেমেন্ট")])]), _vm._v(" "), _c("li", {
-    "class": {
-      active: _vm.sec
-    },
-    attrs: {
-      id: "payment"
-    }
-  }, [_c("strong", [_vm._v("সেক্রেটারি")])]), _vm._v(" "), _c("li", {
-    "class": {
-      active: _vm.chair
-    },
-    attrs: {
-      id: "confirm"
-    }
-  }, [_c("strong", [_vm._v("চেয়ারম্যান")])]), _vm._v(" "), _c("li", {
-    "class": {
-      active: _vm.complate
-    },
-    attrs: {
-      id: "confirm"
-    }
-  }, [_c("strong", [_vm._v("কমপ্লিট")])])])])])]) : _vm._e(), _vm._v(" "), _vm.search && _vm.notfound == false ? _c("table", {
+  })])]), _vm._v(" "), _vm.search && _vm.notfound == false ? _c("table", {
     staticClass: "table"
   }, [_c("tr", [_c("td", {
     staticStyle: {
@@ -9926,7 +9822,13 @@ var render = function render() {
     attrs: {
       colspan: "2"
     }
-  }, [_vm.aplication && _vm.payment ? _c("span", [_vm._v("আপনার সনদ টি এখন সেক্রেটারির কাছে পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন।")]) : _vm._e(), _vm._v(" "), _vm.aplication && _vm.payment && _vm.sec ? _c("span", [_vm._v("আপনার সনদ টি এখন চেয়ারম্যান এর কাছে পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন। ")]) : _vm._e()])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("সেবার ধরণ")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.sonod_name))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("আবেদনের ক্রমিক নাম্বার")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.sonod_Id))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("আবেদনের তারিখ")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.created_at))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("আবেদনকারির নাম")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.applicant_name))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("পিতা/স্বামীর নাম")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.applicant_father_name))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("বর্তমান ঠিকানা")]), _vm._v(" "), _c("td", [_vm._v(" হোল্ডিং নং- " + _vm._s(_vm.sonoddata.applicant_holding_tax_number) + ", " + _vm._s(_vm.sonoddata.applicant_present_village) + ", " + _vm._s(_vm.sonoddata.applicant_present_post_office) + ", " + _vm._s(_vm.sonoddata.applicant_present_Upazila) + ", " + _vm._s(_vm.sonoddata.applicant_present_district))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("মোবাইল নাম্বার")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.applicant_mobile))])])]) : _vm.search && _vm.notfound ? _c("div", {
+  }, [_vm.aplication && _vm.payment ? _c("span", [_vm._v("আপনার সনদ টি এখন পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন।")]) : _vm._e(), _vm._v(" "), _vm.aplication && _vm.payment && _vm.sec ? _c("span", [_vm._v("আপনার সনদটি  পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন। ")]) : _vm._e()])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("tr", [_c("td", [_vm._v("আবেদনের ক্রমিক নাম্বার")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.licence_no))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("আবেদনের তারিখ")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.created_at))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("আবেদনকারির নাম")]), _vm._v(" "), _vm.sonoddata.applicant_type == "একক ব্যক্তি" ? _c("td", {
+    staticClass: "sonodTd"
+  }, [_vm._v(_vm._s(_vm.sonoddata.appicant_name))]) : _vm.sonoddata.applicant_type == "সমবায় সমিতি/প্রতিষ্ঠান" ? _c("td", {
+    staticClass: "sonodTd"
+  }, [_vm._v(_vm._s(_vm.sonoddata.gostir_name))]) : _vm.sonoddata.applicant_type == "একটি গোষ্ঠী" ? _c("td", {
+    staticClass: "sonodTd"
+  }, [_vm._v(_vm._s(_vm.sonoddata.appicant_sumiti_name))]) : _vm._e()]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("বর্তমান ঠিকানা")]), _vm._v(" "), _c("td", [_vm._v("  " + _vm._s(_vm.sonoddata.village) + ", " + _vm._s(_vm.sonoddata.post) + ", " + _vm._s(_vm.sonoddata.upozila) + ", " + _vm._s(_vm.sonoddata.district))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("মোবাইল নাম্বার")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.sonoddata.mobile_number))])])]) : _vm.search && _vm.notfound ? _c("div", {
     staticClass: "card text-center"
   }, [_vm._m(1)]) : _vm._e()]), _vm._v(" "), _c("side-bar")], 1);
 };
@@ -9935,15 +9837,7 @@ var staticRenderFns = [function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", {
-    staticClass: "form-group text-center"
-  }, [_c("input", {
-    staticClass: "btn btn-info",
-    attrs: {
-      type: "submit",
-      value: "Search"
-    }
-  })]);
+  return _c("tr", [_c("td", [_vm._v("সেবার ধরণ")]), _vm._v(" "), _c("td", [_vm._v("গভীর/অগভীর নলকূপ স্থাপনের লাইসেন্সে")])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
@@ -9954,7 +9848,7 @@ var staticRenderFns = [function () {
     staticStyle: {
       color: "red"
     }
-  }, [_vm._v("দু:খিত !")]), _vm._v(" "), _c("p", [_vm._v("আপনার অনুসন্ধানকৃত নম্বরের কোন সনদ/প্রত্যয়নপত্র অত্র ইউনিয়ন পরিষদ থেকে ইস্যু/প্রদান করা হয়নি।")])]);
+  }, [_vm._v("দু:খিত !")]), _vm._v(" "), _c("p", [_vm._v("আপনার অনুসন্ধানকৃত নম্বরের কোন গভীর/অগভীর নলকূপ স্থাপনের লাইসেন্স ইস্যু/প্রদান করা হয়নি।")])]);
 }];
 render._withStripped = true;
 

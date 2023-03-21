@@ -2,27 +2,21 @@
     <div class="row">
         <div class="mainBody col-md-9 mt-3">
             <form method="POST" @submit.stop.prevent="onSubmit">
+
                 <div class="form-group">
-                    <label for="">সনদের ধরন নির্বাচন করুন</label>
-                    <select v-model="form.sonod_name" id="sonod" class="form-control" required>
-                        <option value="">চিহ্নিত করুন</option>
-                        <option v-for="(sonod, r) in SonodNames" :key="'dropdown' + r" :value="sonod.bnname">{{
-                                sonod.bnname
-                        }}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="">ইস্যুকৃত সনদ নম্বর লিখুন</label>
+                    <label for="">ইস্যুকৃত লাইসেন্স নম্বর লিখুন</label>
                     <input type="text" v-model="form.sonod_Id" id="sonodNo" class="form-control" required />
                 </div>
                 <div class="form-group text-center">
-                    <input type="submit" class="btn btn-info" value="Search" />
+                    <input type="submit" class="btn btn-info" v-if="!searching" value="Search" />
+                    <input type="button" class="btn btn-info" disabled v-else value="Searching" />
                 </div>
             </form>
+<!--
+
             <div class="row" v-if="search && notfound == false">
                 <div class="col-md-12 mx-0">
                     <form id="msform">
-                        <!-- progressbar -->
                         <ul id="progressbar">
                             <li :class="{ active: aplication }" id="account"><strong>আবেদন জমা হয়েছে</strong></li>
                             <li :class="{ active: payment }" id="personal"><strong>পেমেন্ট</strong></li>
@@ -33,12 +27,14 @@
                         </ul>
                     </form>
                 </div>
-            </div>
+            </div> -->
+
+
             <table class="table" v-if="search && notfound == false">
                 <tr><td colspan="2" style="text-align: center;font-size: 20px;">
 
-                <span v-if="aplication && payment">আপনার সনদ টি এখন সেক্রেটারির কাছে পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন।</span>
-                <span v-if="aplication && payment && sec">আপনার সনদ টি এখন চেয়ারম্যান এর কাছে পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন। </span>
+                <span v-if="aplication && payment">আপনার সনদ টি এখন পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন।</span>
+                <span v-if="aplication && payment && sec">আপনার সনদটি  পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন। </span>
 
 
                 </td></tr>
@@ -47,11 +43,11 @@
 
                 <tr>
                     <td>সেবার ধরণ</td>
-                    <td>{{ sonoddata.sonod_name }}</td>
+                    <td>গভীর/অগভীর নলকূপ স্থাপনের লাইসেন্সে</td>
                 </tr>
                 <tr>
                     <td>আবেদনের ক্রমিক নাম্বার</td>
-                    <td>{{ sonoddata.sonod_Id }}</td>
+                    <td>{{ sonoddata.licence_no }}</td>
                 </tr>
                 <tr>
                     <td>আবেদনের তারিখ</td>
@@ -59,29 +55,28 @@
                 </tr>
                 <tr>
                     <td>আবেদনকারির নাম</td>
-                    <td>{{ sonoddata.applicant_name }}</td>
+                    <td class="sonodTd" v-if="sonoddata.applicant_type=='একক ব্যক্তি'">{{ sonoddata.appicant_name }}</td>
+                    <td class="sonodTd" v-else-if="sonoddata.applicant_type=='সমবায় সমিতি/প্রতিষ্ঠান'">{{ sonoddata.gostir_name }}</td>
+                    <td class="sonodTd" v-else-if="sonoddata.applicant_type=='একটি গোষ্ঠী'">{{ sonoddata.appicant_sumiti_name }}</td>
                 </tr>
-                <tr>
-                    <td>পিতা/স্বামীর নাম</td>
-                    <td>{{ sonoddata.applicant_father_name }}</td>
-                </tr>
+
                 <tr>
                     <td>বর্তমান ঠিকানা</td>
-                    <td> হোল্ডিং নং- {{ sonoddata.applicant_holding_tax_number }}, {{
-                            sonoddata.applicant_present_village
-                    }}, {{ sonoddata.applicant_present_post_office }}, {{
-        sonoddata.applicant_present_Upazila
-}}, {{ sonoddata.applicant_present_district }}</td>
+                    <td>  {{
+                            sonoddata.village
+                    }}, {{ sonoddata.post }}, {{
+        sonoddata.upozila
+}}, {{ sonoddata.district }}</td>
                 </tr>
                 <tr>
                     <td>মোবাইল নাম্বার</td>
-                    <td>{{ sonoddata.applicant_mobile }}</td>
+                    <td>{{ sonoddata.mobile_number }}</td>
                 </tr>
             </table>
             <div class="card text-center" v-else-if="search && notfound">
                 <div class="card-body">
                     <h1 style="color:red">দু:খিত !</h1>
-                    <p>আপনার অনুসন্ধানকৃত নম্বরের কোন সনদ/প্রত্যয়নপত্র অত্র ইউনিয়ন পরিষদ থেকে ইস্যু/প্রদান করা হয়নি।</p>
+                    <p>আপনার অনুসন্ধানকৃত নম্বরের কোন গভীর/অগভীর নলকূপ স্থাপনের লাইসেন্স ইস্যু/প্রদান করা হয়নি।</p>
                 </div>
             </div>
         </div>
@@ -92,6 +87,7 @@
 export default {
     data() {
         return {
+            searching: false,
             aplication: false,
             payment: false,
             sec: false,
@@ -141,10 +137,11 @@ export default {
     },
     methods: {
         async onSubmit() {
+            this.searching = true
             var res = await this.callApi('post', `/api/sonod/search`, this.form);
             // console.log(res);
-            if (this.$route.query.sonod_Id != this.form.sonod_Id || this.$route.query.sonod_name != this.form.sonod_name) {
-                this.$router.push({ name: 'sonodsearch', query: { sonod_name: this.form.sonod_name, sonod_Id: this.form.sonod_Id } })
+            if (this.$route.query.sonod_Id != this.form.sonod_Id) {
+                this.$router.push({ name: 'sonodsearch', query: {sonod_Id: this.form.sonod_Id } })
                 // console.log('dd')
             }
             if (res.data == 0) {
@@ -204,7 +201,10 @@ export default {
                 // this.sec = true
                 // this.chair = true
                 // this.complate = true
+
+
             }
+            this.searching = false
         }
     },
     mounted() {

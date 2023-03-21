@@ -52,7 +52,11 @@
                                         <li class="nav-item">
                                             <router-link class="nav-link" :to="{ name: 'childApplication' }">রেজিস্টেশন</router-link>
                                         </li>
-
+                                        <li class="nav-item">
+                                            <router-link class="nav-link" :to="{ name: 'sonodsearch' }">সনদ
+                                                যাচাই
+                                            </router-link>
+                                        </li>
                                         <li class="nav-item">
                                             <router-link class="nav-link" :to="{ name: 'contact' }">যোগাযোগ
                                             </router-link>
