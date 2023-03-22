@@ -156,7 +156,7 @@ curl_close($curl);
         $sToken =  $response->secure_token;
 
 
-        return "$Apiurl/v1?sToken=$sToken&trnsID=$trnx_id";
+        return "$Apiurl?sToken=$sToken&trnsID=$trnx_id";
 
     //  return    'https://sandbox.ekpay.gov.bd/ekpaypg/v1?sToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJla3BheWNvcmUiLCJhdXRoIjoiUk9MRV9NRVJDSEFOVCIsImV4cCI6MTU0NTMyMjcxMn0.lqjBuvtqyUbhy4pteKa0IaqpjYQoEDjjnJWSFwcv0Ho2JJHN-8xqr8Q7r-tIJUy_dLajS2XbmrR6lBGrlGFYhQ&trnsID=1234'
 
