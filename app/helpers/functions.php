@@ -99,8 +99,8 @@ curl_close($curl);
 
         $post = [
            'mer_info' => [
-              "mer_reg_id" => "tetulia_test",
-              "mer_pas_key" => "TetuLiA@tsT19"
+              "mer_reg_id" => "tetulia_sechsheba_mer",
+              "mer_pas_key" => "sI8^Q2##"
            ],
            "req_timestamp" => "$req_timestamp GMT+6",
            "feed_uri" => [
@@ -129,7 +129,7 @@ curl_close($curl);
 
         Log::info($post);
 
-        $ch = curl_init('https://sandbox.ekpay.gov.bd/ekpaypg/v1/merchant-api');
+        $ch = curl_init('https://pg.ekpay.gov.bd/ekpaypg/v1/merchant-api');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
@@ -146,7 +146,7 @@ curl_close($curl);
         $sToken =  $response->secure_token;
 
 
-        return "https://sandbox.ekpay.gov.bd/ekpaypg/v1?sToken=$sToken&trnsID=$trnx_id";
+        return "https://pg.ekpay.gov.bd/ekpaypg/v1/v1?sToken=$sToken&trnsID=$trnx_id";
 
     //  return    'https://sandbox.ekpay.gov.bd/ekpaypg/v1?sToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJla3BheWNvcmUiLCJhdXRoIjoiUk9MRV9NRVJDSEFOVCIsImV4cCI6MTU0NTMyMjcxMn0.lqjBuvtqyUbhy4pteKa0IaqpjYQoEDjjnJWSFwcv0Ho2JJHN-8xqr8Q7r-tIJUy_dLajS2XbmrR6lBGrlGFYhQ&trnsID=1234'
 
