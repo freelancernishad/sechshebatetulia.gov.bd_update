@@ -91,16 +91,26 @@ curl_close($curl);
 
     function ekpayToken($trnx_id=123456789,$trnx_amt=0,$cust_info=[],$path='payment'){
 
-         $url = "https://" . $_SERVER['HTTP_HOST'];
+
         $req_timestamp = date('Y-m-d H:i:s');
+
+
+        $Apiurl = 'https://pg.ekpay.gov.bd/ekpaypg/v1';
+        $url = 'https://www.esspmtetulia.gov.bd';
+
+        $whitelistip = '198.54.114.109';
+       $req_timestamp = date('Y-m-d H:i:s');
+
+     $AKPAY_MER_REG_ID = 'tetulia_sechsheba_mer';
+    $AKPAY_MER_PASS_KEY = 'sI8^Q2##';
 
 
 
 
         $post = [
            'mer_info' => [
-              "mer_reg_id" => "tetulia_sechsheba_mer",
-              "mer_pas_key" => "sI8^Q2##"
+              "mer_reg_id" => "$AKPAY_MER_REG_ID",
+              "mer_pas_key" => "$AKPAY_MER_PASS_KEY"
            ],
            "req_timestamp" => "$req_timestamp GMT+6",
            "feed_uri" => [
@@ -121,7 +131,7 @@ curl_close($curl);
               "ipn_email" => "freelancernishad123@gmail.com",
               "ipn_uri" => "$url/api/ipn"
            ],
-           "mac_addr" => "1.1.1.1"
+           "mac_addr" => "$whitelistip"
         ];
 
         // 148.163.122.80
@@ -129,7 +139,7 @@ curl_close($curl);
 
         Log::info($post);
 
-        $ch = curl_init('https://pg.ekpay.gov.bd/ekpaypg/v1/merchant-api');
+        $ch = curl_init("$Apiurl/merchant-api");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
@@ -146,7 +156,7 @@ curl_close($curl);
         $sToken =  $response->secure_token;
 
 
-        return "https://pg.ekpay.gov.bd/ekpaypg/v1/v1?sToken=$sToken&trnsID=$trnx_id";
+        return "$Apiurl/v1?sToken=$sToken&trnsID=$trnx_id";
 
     //  return    'https://sandbox.ekpay.gov.bd/ekpaypg/v1?sToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJla3BheWNvcmUiLCJhdXRoIjoiUk9MRV9NRVJDSEFOVCIsImV4cCI6MTU0NTMyMjcxMn0.lqjBuvtqyUbhy4pteKa0IaqpjYQoEDjjnJWSFwcv0Ho2JJHN-8xqr8Q7r-tIJUy_dLajS2XbmrR6lBGrlGFYhQ&trnsID=1234'
 
