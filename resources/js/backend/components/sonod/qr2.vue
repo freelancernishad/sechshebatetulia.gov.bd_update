@@ -39,7 +39,8 @@ Html5Qrcode.getCameras().then(devices => {
   }
 
   this.scanner.start(
-    cameraId,
+    // cameraId,
+    { facingMode: "environment" },
     {
         fps: 10,    // Optional, frame per seconds for qr code scanning
         qrbox: { width: 250, height: 250 }  // Optional, if you want bounded box UI
