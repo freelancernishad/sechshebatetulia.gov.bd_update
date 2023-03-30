@@ -21,6 +21,7 @@ use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\HoldingBokeyaController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\SonodnamelistController;
+use App\Http\Controllers\CitizenInformationController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -87,6 +88,11 @@ Route::post('update/users',[RoleController::class,'updateuser']);
 Route::resources([
 	'tikalog' => TikaLogController::class,
 ]);
+
+
+
+Route::post('citizen/information/nid', [CitizenInformationController::class,'citizeninformationNID']);
+Route::post('citizen/information/brn', [CitizenInformationController::class,'citizeninformationBRN']);
 
 Route::get('check/tika',[TikaLogController::class,'tikacount']);
 

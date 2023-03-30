@@ -51,10 +51,38 @@
 
                                 <div class="col-md-12" v-if="form.applicant_type=='একক ব্যক্তি'">
                                     <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for=""  class="labelColor">জাতীয় পরিচয় নং</label>
+                                                <input type="text" v-model="form.nid_no" id="nid_no" class="form-control" placeholder="" required >
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for=""  class="labelColor">জন্ম তারিখ</label>
+                                                <input type="date" v-model="form.dateOfBirth" id="nid_no" class="form-control" placeholder="" required >
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <button type="button" @click="checkNID">Check NID</button>
+
+                                            </div>
+                                        </div>
+
+
+
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for=""  class="labelColor">নাম</label>
-                                                <input type="text" v-model="form.appicant_name" id="appicant_name" class="form-control" placeholder="" required >
+                                                <input type="text" v-model="form.appicant_name" id="appicant_name" class="form-control" placeholder="" disabled readonly required >
 
                                             </div>
                                         </div>
@@ -62,7 +90,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for=""  class="labelColor">পিতার নাম</label>
-                                                <input type="text" v-model="form.applicant_father_name" id="applicant_father_name" class="form-control" placeholder="" required >
+                                                <input type="text" v-model="form.applicant_father_name" id="applicant_father_name" class="form-control" placeholder="" disabled readonly required >
 
                                             </div>
                                         </div>
@@ -129,37 +157,60 @@
 
 
 
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="" class="labelColor">বিভাগ</label>
-
-                            <select class='form-control'  id="division" v-model="Pdivision" @change="getdistrictFun" required>
-                                <option value="">বিভাগ নির্বাচন করুন</option>
-                                <option v-for="(div,indexx) in getdivisions" :key="'divisionss'+indexx" :value="div.id">{{ div.bn_name }}
-                                </option>
-                            </select>
-
-                            <!-- <input type="text" class="form-control" v-model="form.applicant_present_district"> -->
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
+        <div class="col-md-12"  v-if="form.applicant_type=='একক ব্যক্তি'">
+            <div class="row">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="" class="labelColor">জেলা</label>
+                        <input type="text" class="form-control" v-model="form.district" disabled readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="" class="labelColor">উপজেলা/থানা</label>
+                        <input type="text" class="form-control" v-model="form.upozila" disabled readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="" class="labelColor">ইউনিয়ন</label>
+                        <input type="text" class="form-control" v-model="form.union" disabled readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="">ডাকঘর</label>
+                        <input type="text" class="form-control" v-model="form.post" disabled readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-12"  v-else>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="" class="labelColor">বিভাগ</label>
+
+                        <select class='form-control'  id="division" v-model="Pdivision" @change="getdistrictFun" required>
+                            <option value="">বিভাগ নির্বাচন করুন</option>
+                            <option v-for="(div,indexx) in getdivisions" :key="'divisionss'+indexx" :value="div.id">{{ div.bn_name }}
+                            </option>
+                        </select>
+                        <!-- <input type="text" class="form-control" v-model="form.applicant_present_district"> -->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="" class="labelColor">জেলা</label>
                         <select class='form-control' id="district" v-model="applicant_present_district" @change="getthanaFun" required>
                             <option value="">জেলা নির্বাচন করুন</option>
                             <option v-for="dist in getdistricts" :key="'dist'+dist.id" :value="dist.id">{{ dist.bn_name }}
                             </option>
                         </select>
-
                         <!-- <input type="text" class="form-control" v-model="form.applicant_present_district"> -->
                     </div>
                 </div>
-
-
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="" class="labelColor">উপজেলা/থানা</label>
@@ -169,52 +220,40 @@
                             <option v-for="thana in getthanas" :key="'thana'+thana.id" :value="thana.id">{{ thana.bn_name
                             }}</option>
                         </select>
-
                         <!-- <input type="text" class="form-control" v-model="form.applicant_present_Upazila"> -->
                     </div>
                 </div>
-
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="" class="labelColor">ইউনিয়ন</label>
-
                         <select class='form-control'  id="thana" v-model="form.union"  required>
                             <option value="">ইউনিয়ন নির্বাচন করুন</option>
                             <option v-for="union in getuniouns" :key="'union'+union.id" :value="union.bn_name">{{ union.bn_name
                             }}</option>
                         </select>
-
-
                     </div>
                 </div>
-
-
-
                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="">ডাকঘর</label>
+                    <div class="form-group">
+                        <label for="">ডাকঘর</label>
+                        <select v-model="form.post" id="post" class="form-control" required >
+                            <option value="">ডাকঘর নির্বাচন করুন</option>
+                            <option value="বাংলাবান্ধা">বাংলাবান্ধা</option>
+                            <option value="সিপাইপাড়া">সিপাইপাড়া</option>
+                            <option value="তিরনইহাট">তিরনইহাট</option>
+                            <option value="তেঁতুলিয়া">তেঁতুলিয়া</option>
+                            <option value="আজিজনগর">আজিজনগর</option>
+                            <option value="শালবাহান">শালবাহান</option>
+                            <option value="মাঝিপাড়া">মাঝিপাড়া</option>
+                            <option value="বুড়াবুড়ি">বুড়াবুড়ি</option>
+                            <option value="ভজনপুর">ভজনপুর</option>
+                            <option value="দেবনগর">দেবনগর</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                                        <select v-model="form.post" id="post" class="form-control" required >
-
-                                            <option value="">ডাকঘর নির্বাচন করুন</option>
-                                            <option value="বাংলাবান্ধা">বাংলাবান্ধা</option>
-                                            <option value="সিপাইপাড়া">সিপাইপাড়া</option>
-                                            <option value="তিরনইহাট">তিরনইহাট</option>
-                                            <option value="তেঁতুলিয়া">তেঁতুলিয়া</option>
-                                            <option value="আজিজনগর">আজিজনগর</option>
-                                            <option value="শালবাহান">শালবাহান</option>
-                                            <option value="মাঝিপাড়া">মাঝিপাড়া</option>
-                                            <option value="বুড়াবুড়ি">বুড়াবুড়ি</option>
-                                            <option value="ভজনপুর">ভজনপুর</option>
-                                            <option value="দেবনগর">দেবনগর</option>
-
-
-                                        </select>
-
-
-                                    </div>
-                                </div>
 
 
                 <div class="col-md-6">
@@ -261,6 +300,9 @@
 
 
 
+
+
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for=""  class="labelColor">মোবাইল নম্বর</label>
@@ -279,13 +321,6 @@
                                 </div>
 
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for=""  class="labelColor">জাতীয় পরিচয় নং</label>
-                                        <input type="text" v-model="form.nid_no" id="nid_no" class="form-control" placeholder="" required >
-
-                                    </div>
-                                </div>
 
 
                                 <div class="col-md-12"></div>
@@ -746,7 +781,8 @@ export default {
         village:'',
         mobile_number:'',
         email:'',
-        nid_no:'',
+        nid_no:'2385830951',
+        dateOfBirth:'1975-11-10',
         nolkup_type:'',
         nolkup_size:'',
         area_description:'',
@@ -791,6 +827,12 @@ export default {
       applicant_present_district: "",
       thana: "",
 
+      nidform:{
+        nidNumber:'',
+        dateOfBirth:'',
+      },
+
+
     };
   },
   watch: {
@@ -804,6 +846,36 @@ export default {
   },
 
   methods: {
+
+    async checkNID(){
+        this.nidform['nidNumber'] = this.form.nid_no;
+        this.nidform['dateOfBirth'] = this.form.dateOfBirth;
+
+        var res = await this.callApi('post',`/api/citizen/information/nid`,this.nidform);
+        console.log(res)
+
+        if(res.data.status=='invaild dateOfBirth'){
+            this.form.appicant_name = ''
+            this.form.applicant_father_name = ''
+        }else if(res.data.status=='found'){
+            this.form.appicant_name = res.data.informations.fullNameBN
+            this.form.applicant_father_name = res.data.informations.fathersNameBN
+            this.form.district = res.data.informations.presentDistrict
+            this.form.upozila = res.data.informations.presentThana
+            this.form.union = res.data.informations.presentUnion
+            this.form.post = res.data.informations.presentPost
+            this.form.village = res.data.informations.presentVillage
+        }else if(res.data.status=='not-found'){
+            this.form.appicant_name = ''
+        this.form.applicant_father_name = ''
+        }else{
+            this.form.appicant_name = ''
+            this.form.applicant_father_name = ''
+        }
+
+    },
+
+
 
 
     FileSelected($event, parent_index) {
