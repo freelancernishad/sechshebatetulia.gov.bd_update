@@ -97,6 +97,9 @@ class CitizenInformationController extends Controller
                 $NidInfo = (array)$response->data->nid;
                 $NidInfo['dateOfBirth'] = $dateOfBirth;
 
+               $CitizenInformation =  CitizenInformation::create($NidInfo);
+
+
                 $presentAddressBNArray =  explode(", ",$response->data->nid->presentAddressBN);
                 $presentAddressBNArrayCount = count($presentAddressBNArray);
                 if($presentAddressBNArrayCount>5){
@@ -151,8 +154,9 @@ class CitizenInformationController extends Controller
               //   $NidInfo['photoUrl'] =  fileuploadURL($base64_image,'citizenImage/');
                 $NidInfo['photoUrl'] =  $photoUrl;
 
+                $CitizenInformation->update($NidInfo);
 
-                CitizenInformation::create($NidInfo);
+              
             }
 
 
