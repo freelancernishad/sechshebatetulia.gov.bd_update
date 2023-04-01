@@ -30,9 +30,6 @@ Vue.component('Prodibedondakhil', Prodibedondakhil);
 
 Vue.prototype.$localStorage = localStorage;
 
-import loader from "vue-ui-preloader";
-
-Vue.use(loader);
 
 import Multiselect from 'vue-multiselect'
 

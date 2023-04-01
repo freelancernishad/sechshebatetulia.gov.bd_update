@@ -818,6 +818,17 @@ function base642($Image)
     }
 }
 
+function base64URL($Image)
+{
+//  return $Image;
+
+
+        $Image= $Image;
+
+
+$ext =  pathinfo($Image, PATHINFO_EXTENSION);
+    return $b64image = "data:image/$ext;base64,".base64_encode(file_get_contents($Image));
+}
 function base64($Image)
 {
 //  return $Image;
@@ -861,8 +872,6 @@ if($width=='' && $height==''){
     $img = Image::make($Image)->resize($width, $height);
 }
 
-
-
  $img->save(env('FILE_PATH').$image_url);
  return $image_url;
 
@@ -893,6 +902,38 @@ if($width=='' && $height==''){
 
 
 
+
+}
+
+ function fileuploadURL($Image,$path,$width='',$height='',$customname='')
+{
+ // same file server
+ if (!file_exists(env('FILE_PATH').$path)) {
+    File::makeDirectory(env('FILE_PATH').$path, 0777, true, true);
+}
+
+ $position = strpos($Image, ';');
+$sub = substr($Image, 0, $position);
+$ext = explode('/', $sub)[1];
+$random = rand(10000,99999);
+if($customname!=''){
+$name = time().'____'.$customname.'.'.$ext;
+}else{
+$name = time().'____'.$random.'.'.$ext;
+}
+$upload_path = $path;
+$image_url = $upload_path.$name;
+
+if($width=='' && $height==''){
+
+    $img = Image::make($Image);
+}else{
+
+    $img = Image::make($Image)->resize($width, $height);
+}
+
+ $img->save(env('FILE_PATH').$image_url);
+ return asset($image_url);
 
 }
 

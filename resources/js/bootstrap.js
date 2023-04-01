@@ -14,6 +14,8 @@ Vue.prototype.$withOutWWW = 3
 
 
 
+import loader from "vue-ui-preloader";
+Vue.use(loader);
 
 Vue.prototype.$localStorage = localStorage
 window.ASSETURL = Vue.prototype.$asseturl

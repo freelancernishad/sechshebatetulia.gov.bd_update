@@ -30,6 +30,7 @@ class aplication extends Model
         'mobile_number',
         'email',
         'nid_no',
+        'dateOfBirth',
         'nolkup_type',
         'nolkup_size',
         'area_description',

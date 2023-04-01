@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CitizenInformation;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Storage;
 
 class CitizenInformationController extends Controller
 {
@@ -27,6 +29,8 @@ class CitizenInformationController extends Controller
 
 
 
+
+        //   $informations->update(['photoUrl'=>$photoUrl]);
 
 
 
@@ -80,7 +84,7 @@ class CitizenInformationController extends Controller
 
               curl_close($curl);
 
-          return  $response = json_decode($response);
+            return $response = json_decode($response);
 
             if($response->status=='NO'){
                 $responseData = [
@@ -93,7 +97,7 @@ class CitizenInformationController extends Controller
                 $NidInfo = (array)$response->data->nid;
                 $NidInfo['dateOfBirth'] = $dateOfBirth;
 
-                $presentAddressBNArray =  explode(", ",$response->data->presentAddressBN);
+                $presentAddressBNArray =  explode(", ",$response->data->nid->presentAddressBN);
                 $presentAddressBNArrayCount = count($presentAddressBNArray);
                 if($presentAddressBNArrayCount>5){
                  $presentHoldingArray = explode(':',$presentAddressBNArray[0]);
@@ -117,7 +121,7 @@ class CitizenInformationController extends Controller
                 $NidInfo['presentDistrict'] = $presentAddressBNArray[5];
                 }
 
-                $permanentAddressArray =  explode(", ",$response->data->permanentAddressBN);
+                $permanentAddressArray =  explode(", ",$response->data->nid->permanentAddressBN);
                 $permanentAddressArrayCount = count($permanentAddressArray);
                 if($permanentAddressArrayCount>5){
                  $permanentHoldingArray = explode(':',$permanentAddressArray[0]);
@@ -137,7 +141,15 @@ class CitizenInformationController extends Controller
                 $NidInfo['permanentDistrict'] = $permanentAddressArray[5];
                 }
 
+                $url = $response->data->nid->photoUrl; // replace with your image URL
+                $client = new Client();
+                $response = $client->get($url);
+                 $ext =  pathinfo($url, PATHINFO_EXTENSION);
 
+                $photoUrl = "data:image/$ext;base64,".base64_encode($response->getBody()->getContents());
+
+              //   $NidInfo['photoUrl'] =  fileuploadURL($base64_image,'citizenImage/');
+                $NidInfo['photoUrl'] =  $photoUrl;
 
 
                 CitizenInformation::create($NidInfo);
@@ -319,3 +331,26 @@ class CitizenInformationController extends Controller
 //     },
 //     "errors": []
 // }
+
+
+
+// {
+//     "fullNameEN": "NISHAD HOSSAIN",
+//     "fathersNameEN": "Md. Joynal Abedin",
+//     "mothersNameEN": "Banesha Begum",
+//     "presentAddressEN": "Home / Holding: -, Village / Road: Baneshwar Para, Tepriganj, Post Office: Tepriganj-5020, Debiganj, Panchagarh",
+//     "permenantAddressEN": "Home / Holding: -, Village / Road: Baneshwar Para, Tepriganj, Post Office: Tepriganj-5020, Debiganj, Panchagarh",
+//     "fullNameBN": "নিশাদ হোসাইন",
+//     "fathersNameBN": "মোঃ জয়নাল আবেদীন",
+//     "mothersNameBN": "বানেছা বেগম",
+//     "spouseNameBN": "",
+//     "presentAddressBN": "বাসা/হোল্ডিং: -, গ্রাম/রাস্তা: বানেশ্বর পাড়া, টেপ্রীগঞ্জ, ডাকঘর: টেপ্রীগঞ্জ-৫০২০, দেবীগঞ্জ, পঞ্চগড়",
+//     "permanentAddressBN": "বাসা/হোল্ডিং: -, গ্রাম/রাস্তা: বানেশ্বর পাড়া, টেপ্রীগঞ্জ, ডাকঘর: টেপ্রীগঞ্জ-৫০২০, দেবীগঞ্জ, পঞ্চগড়",
+//     "gender": "male",
+//     "profession": "ছাত্র/ছাত্রী",
+//     "dateOfBirth": "2001-08-25T00:00:00",
+//     "nationalIdNumber": "7811287346",
+//     "oldNationalIdNumber": "20017713495000344",
+//     "photoUrl": "https://prportal.nidw.gov.bd/file-1f/d/b/9/82fdaaa7-b2eb-48bc-a041-71a19507f528/Photo-82fdaaa7-b2eb-48bc-a041-71a19507f528.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=fileobj%2F20230401%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230401T044812Z&X-Amz-Expires=120&X-Amz-SignedHeaders=host&X-Amz-Signature=e0f825578c006ee9ad9412db051f6bafa396debee5f05cb8d1674372d6520ff1"
+// }
+

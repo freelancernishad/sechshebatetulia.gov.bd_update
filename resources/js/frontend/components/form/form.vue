@@ -1,6 +1,7 @@
 <template>
     <div>
-
+        <loader v-if="preLooding" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40"
+            objectbg="#999793" opacity="80" name="circular"></loader>
 
 
             <div class="row">
@@ -52,7 +53,8 @@
                                 <div class="col-md-12" v-if="form.applicant_type=='একক ব্যক্তি'">
                                     <div class="row">
 
-                                        <div class="col-md-6">
+
+                                        <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for=""  class="labelColor">জাতীয় পরিচয় নং</label>
                                                 <input type="text" v-model="form.nid_no" id="nid_no" class="form-control" placeholder="" required >
@@ -60,7 +62,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for=""  class="labelColor">জন্ম তারিখ</label>
                                                 <input type="date" v-model="form.dateOfBirth" id="nid_no" class="form-control" placeholder="" required >
@@ -69,11 +71,10 @@
                                         </div>
 
 
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <button type="button" @click="checkNID">Check NID</button>
 
-                                            </div>
+
+                                        <div class="col-md-2" style="display: flex;justify-content: center;align-items: center;">
+                                                <button type="button" @click="checkNID" class="btn btn-info">Check NID</button>
                                         </div>
 
 
@@ -579,6 +580,7 @@
 
                                         <input type="file" class="custom-file-input" id="passport_size_mage" @change="FileSelected($event, 'passport_size_mage')">
                                         <label class="custom-file-label" for="passport_size_mage">Choose file</label>
+                                        <img :src="form.passport_size_mage" width="100px" alt="">
 
 
                                     </div>
@@ -592,6 +594,7 @@
 
                                         <input type="file" class="custom-file-input" id="nid_copy" @change="FileSelected($event, 'nid_copy')">
                                         <label class="custom-file-label" for="nid_copy">Choose file</label>
+                                        <img :src="form.nid_copy" width="100px" alt="">
 
 
                                     </div>
@@ -610,6 +613,7 @@
                                         <label for=""  class="labelColor">খতিয়ানের কপি</label>
                                         <input type="file" class="custom-file-input" id="khotiyan_copy" @change="FileSelected($event, 'khotiyan_copy')">
                                         <label class="custom-file-label" for="khotiyan_copy">Choose file</label>
+                                        <img :src="form.khotiyan_copy" width="100px" alt="">
 
                                     </div>
                                 </div>
@@ -621,6 +625,7 @@
                                         <label for=""  class="labelColor">ভূমি উন্নয়ন কর পরিশোধের কপি</label>
                                         <input type="file" class="custom-file-input" id="tax_copy" @change="FileSelected($event, 'tax_copy')">
                                         <label class="custom-file-label" for="tax_copy">Choose file</label>
+                                        <img :src="form.tax_copy" width="100px" alt="">
 
 
                                     </div>
@@ -634,6 +639,7 @@
                                         <label for=""  class="labelColor">নকশা/মৌজা ম্যাপ</label>
                                         <input type="file" class="custom-file-input" id="map" @change="FileSelected($event, 'map')" >
                                         <label class="custom-file-label" for="map">Choose file</label>
+                                        <img :src="form.map" width="100px" alt="">
 
 
                                     </div>
@@ -646,6 +652,7 @@
                                         <label for=""  class="labelColor">ওয়ারিশান সনদপত্রের কপি (প্রযোজ্য ক্ষেত্রে)</label>
                                         <input type="file" class="custom-file-input" id="wyarisan" @change="FileSelected($event, 'wyarisan')">
                                         <label class="custom-file-label" for="wyarisan">Choose file</label>
+                                        <img :src="form.wyarisan" width="100px" alt="">
 
 
                                     </div>
@@ -667,7 +674,7 @@
                                             <td>
                                                 <div class="form-group">
                                                     <input type="file" class="form-control" @change="FileSelectedLoop($event, index)" required>
-
+                                                    <img :src="form.land_copy[index]" width="100px" alt="">
                                                 </div>
                                         </td>
                                             <td><button type="button" class="ml-2 btn btn-danger" @click="remove(index)" v-show="index != 0">মুছন</button></td>
@@ -763,6 +770,7 @@ export default {
         content: "",
         content_id: "",
       },
+      preLooding: false,
       submitLoad: false,
       form: {
         applicant_type:'',
@@ -848,6 +856,7 @@ export default {
   methods: {
 
     async checkNID(){
+        this.preLooding = true
         this.nidform['nidNumber'] = this.form.nid_no;
         this.nidform['dateOfBirth'] = this.form.dateOfBirth;
 
@@ -865,6 +874,7 @@ export default {
             this.form.union = res.data.informations.presentUnion
             this.form.post = res.data.informations.presentPost
             this.form.village = res.data.informations.presentVillage
+            this.form.passport_size_mage = res.data.informations.photoUrl
         }else if(res.data.status=='not-found'){
             this.form.appicant_name = ''
         this.form.applicant_father_name = ''
@@ -872,6 +882,7 @@ export default {
             this.form.appicant_name = ''
             this.form.applicant_father_name = ''
         }
+        this.preLooding = false
 
     },
 
