@@ -244,7 +244,7 @@ class SonodController extends Controller
 
 
 
-        $passport_size_mageCount =  count(explode(';', $r->passport_size_mage));
+     return   $passport_size_mageCount =  count(explode(';', $r->passport_size_mage));
         if ($passport_size_mageCount > 1) {
             $data['passport_size_mage'] =  fileupload($r->passport_size_mage, "sonod/passport_size_mage/");
         }
