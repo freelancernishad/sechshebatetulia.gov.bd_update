@@ -115,7 +115,7 @@ class fronendController extends Controller
         $qrcode = $output;
         $licence_no =   $row->licence_no;
 
-        // return $row;
+         return base64($row->nid_copy);
 
          return view('applicantion_full_copy',compact('row','image','gov_logos','mojib_logos','badc_logos','qrcode','licence_no'));
 
