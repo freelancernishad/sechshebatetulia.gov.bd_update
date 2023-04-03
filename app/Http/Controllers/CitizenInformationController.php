@@ -13,6 +13,14 @@ class CitizenInformationController extends Controller
 
     public function citizeninformationNID(Request $request)
     {
+
+
+
+
+
+
+
+
         // return $request->all();
 
         $nationalIdNumber = $request->nidNumber;
@@ -147,8 +155,15 @@ class CitizenInformationController extends Controller
                 $url = $response->data->nid->photoUrl; // replace with your image URL
                 $client = new Client();
                 $response = $client->get($url);
-                 $ext =  pathinfo($url, PATHINFO_EXTENSION);
 
+                 $extArray =  pathinfo($url, PATHINFO_EXTENSION);
+                 $extArrayExplode = explode('?',$extArray);
+                 $extCount =  count($extArrayExplode);
+                if($extCount>1){
+                    $ext = $extArrayExplode[0];
+                }else{
+                    $ext = $extArray;
+                }
                 $photoUrl = "data:image/$ext;base64,".base64_encode($response->getBody()->getContents());
 
               //   $NidInfo['photoUrl'] =  fileuploadURL($base64_image,'citizenImage/');
