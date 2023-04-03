@@ -831,7 +831,8 @@ $ext =  pathinfo($Image, PATHINFO_EXTENSION);
 }
 function base64($Image)
 {
-//  return $Image;
+ return $Image;
+    return $File::exists(env('FILE_PATH').$Image);
 
     if(File::exists(env('FILE_PATH').$Image)){
 
