@@ -84,7 +84,7 @@ class CitizenInformationController extends Controller
 
               curl_close($curl);
 
-            return $response = json_decode($response);
+             $response = json_decode($response);
 
             if($response->status=='NO'){
                 $responseData = [
@@ -156,7 +156,7 @@ class CitizenInformationController extends Controller
 
                 $CitizenInformation->update($NidInfo);
 
-              
+
             }
 
 
