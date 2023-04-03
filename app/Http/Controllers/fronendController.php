@@ -117,10 +117,11 @@ class fronendController extends Controller
 
         // return $row;
 
+         return view('applicantion_full_copy',compact('row','image','gov_logos','mojib_logos','badc_logos','qrcode','licence_no'));
+
         $pdf = PDF::loadView('applicantion_full_copy',compact('row','image','gov_logos','mojib_logos','badc_logos','qrcode','licence_no'));
         return $pdf->stream("sechsheba-77190$licence_no.pdf");
 
-        //  return view('license',$data);
     }
 
 

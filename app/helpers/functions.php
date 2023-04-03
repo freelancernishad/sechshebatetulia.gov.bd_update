@@ -840,7 +840,7 @@ function base64($Image)
         $Image= env('FILE_PATH').'backend/image.png';
 
     }
-
+return $Image;
 $ext =  pathinfo($Image, PATHINFO_EXTENSION);;
     return $b64image = "data:image/$ext;base64,".base64_encode(file_get_contents($Image));
 }
