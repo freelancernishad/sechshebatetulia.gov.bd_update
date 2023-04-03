@@ -115,9 +115,9 @@ class fronendController extends Controller
         $qrcode = $output;
         $licence_no =   $row->licence_no;
 
-         return base64($row->nid_copy);
+        //  return base64($row->nid_copy);
 
-         return view('applicantion_full_copy',compact('row','image','gov_logos','mojib_logos','badc_logos','qrcode','licence_no'));
+        //  return view('applicantion_full_copy',compact('row','image','gov_logos','mojib_logos','badc_logos','qrcode','licence_no'));
 
         $pdf = PDF::loadView('applicantion_full_copy',compact('row','image','gov_logos','mojib_logos','badc_logos','qrcode','licence_no'));
         return $pdf->stream("sechsheba-77190$licence_no.pdf");

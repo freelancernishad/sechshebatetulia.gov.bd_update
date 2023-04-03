@@ -829,19 +829,21 @@ function base64URL($Image)
 $ext =  pathinfo($Image, PATHINFO_EXTENSION);
     return $b64image = "data:image/$ext;base64,".base64_encode(file_get_contents($Image));
 }
-function base64($Image)
+function base64($Image=null)
 {
- return $Image;
-    return $File::exists(env('FILE_PATH').$Image);
 
-    if(File::exists(env('FILE_PATH').$Image)){
 
-        $Image= env('FILE_PATH').$Image;
-    }else{
+
+    if($Image=='' || $Image==null){
         $Image= env('FILE_PATH').'backend/image.png';
-
+    }else{
+          if(File::exists(env('FILE_PATH').$Image)){
+            $Image= env('FILE_PATH').$Image;
+        }else{
+            $Image= env('FILE_PATH').'backend/image.png';
+        }
     }
-return $Image;
+
 $ext =  pathinfo($Image, PATHINFO_EXTENSION);;
     return $b64image = "data:image/$ext;base64,".base64_encode(file_get_contents($Image));
 }
