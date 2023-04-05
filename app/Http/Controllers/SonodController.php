@@ -95,11 +95,11 @@ class SonodController extends Controller
         $feeParams = $request->f;
         $total_amount = 0;
         if($feeParams=='l'){
-            $total_amount = 1;
+            $total_amount = 1000;
             $sonod_type = 'license_fee';
 
         }elseif($feeParams=='a'){
-            $total_amount = 1;
+            $total_amount = 200;
             $sonod_type = 'application_fee';
         }
 
