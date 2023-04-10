@@ -12,29 +12,29 @@
                     <input type="button" class="btn btn-info" disabled v-else value="Searching" />
                 </div>
             </form>
-<!--
+
 
             <div class="row" v-if="search && notfound == false">
                 <div class="col-md-12 mx-0">
                     <form id="msform">
                         <ul id="progressbar">
                             <li :class="{ active: aplication }" id="account"><strong>আবেদন জমা হয়েছে</strong></li>
-                            <li :class="{ active: payment }" id="personal"><strong>পেমেন্ট</strong></li>
-                            <li :class="{ active: sec }" id="payment"><strong>সেক্রেটারি</strong></li>
-                            <li :class="{ active: chair }" id="confirm"><strong>চেয়ারম্যান</strong></li>
-                            <li :class="{ active: complate }" id="confirm"><strong>কমপ্লিট</strong></li>
+                            <li :class="{ active: todonttodhin }" id="payment"><strong>তদন্তাধীন</strong></li>
+                            <li :class="{ active: todonttokrito }" id="confirm"><strong>তদন্তকৃত</strong></li>
+                            <li :class="{ active: approved }" id="confirm"><strong>অনুমোদিত</strong></li>
+                            <li :class="{ active: lisenefee }" id="confirm"><strong>লাইসেন্স ফি</strong></li>
 
                         </ul>
                     </form>
                 </div>
-            </div> -->
+            </div>
 
 
             <table class="table" v-if="search && notfound == false">
                 <tr><td colspan="2" style="text-align: center;font-size: 20px;">
 
-                <span v-if="aplication && payment">আপনার সনদ টি এখন পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন।</span>
-                <span v-if="aplication && payment && sec">আপনার সনদটি  পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন। </span>
+                <span v-if="aplication && todonttodhin">আপনার লাইসেন্সটি এখন পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন।</span>
+                <span v-if="aplication && todonttodhin && todonttokrito">আপনার লাইসেন্সটি  পক্রিয়াধীন আছে। দয়া করে অপেক্ষা করুন। </span>
 
 
                 </td></tr>
@@ -89,10 +89,10 @@ export default {
         return {
             searching: false,
             aplication: false,
-            payment: false,
-            sec: false,
-            chair: false,
-            complate: false,
+            todonttodhin: false,
+            todonttokrito: false,
+            approved: false,
+            lisenefee: false,
             cancel: false,
             form: {
                 sonod_Id: null,
@@ -139,68 +139,73 @@ export default {
         async onSubmit() {
             this.searching = true
             var res = await this.callApi('post', `/api/sonod/search`, this.form);
-            // console.log(res);
+            console.log(res);
             if (this.$route.query.sonod_Id != this.form.sonod_Id) {
                 this.$router.push({ name: 'sonodsearch', query: {sonod_Id: this.form.sonod_Id } })
                 // console.log('dd')
             }
             if (res.data == 0) {
                 this.aplication = false
-                this.payment = false
-                this.sec = false
-                this.chair = false
-                this.complate = false
+                    this.todonttodhin = false
+                    this.todonttokrito = false
+                    this.approved = false
+                    this.lisenefee = false
                 this.search = true;
                 this.notfound = true;
             } else if (res.data.searchstatus == 'approved') {
                 this.sonoddata = res.data
                 this.search = true;
                 this.notfound = false;
+
                 this.aplication = true
-                this.payment = true
-                this.sec = true
-                this.chair = true
-                this.complate = true
+                    this.todonttodhin = true
+                    this.todonttokrito = true
+                    this.approved = true
+                    this.lisenefee = true
                 this.$router.push({ name: 'sonodVerify', params: { id: res.data.id } })
             } else if (res.data.searchstatus == 'all') {
                 this.sonoddata = res.data
                 this.search = true;
                 this.notfound = false;
 
-                if (res.data.stutus == 'Pending' && res.data.payment_status == 'Unpaid') {
-                    console.log('Unpaid');
+               if (res.data.status == 'pending' && res.data.payment_status == 'Unpaid') {
+                    console.log('pending');
                     this.aplication = true
-                    this.payment = false
-                    this.sec = false
-                    this.chair = false
-                    this.complate = false
-                } else if (res.data.stutus == 'Pending' && res.data.payment_status == 'Paid') {
-                    console.log('Paid');
+                    this.todonttodhin = false
+                    this.todonttokrito = false
+                    this.approved = false
+                    this.lisenefee = false
+                } else if (res.data.status == 'processing' && res.data.payment_status == 'Unpaid') {
+                    console.log('processing');
                     this.aplication = true
-                    this.payment = true
-                    this.sec = false
-                    this.chair = false
-                    this.complate = false
-                } else if (res.data.stutus == 'Secretary_approved' && res.data.payment_status == 'Paid') {
+                    this.todonttodhin = true
+                    this.todonttokrito = false
+                    this.approved = false
+                    this.lisenefee = false
+                } else if (res.data.status == 'processied' && res.data.payment_status == 'Unpaid') {
+                    console.log('processied');
                     this.aplication = true
-                    this.payment = true
-                    this.sec = true
-                    this.chair = false
-                    this.complate = false
-                } else if (res.data.stutus == 'approved' && res.data.payment_status == 'Paid') {
+                    this.todonttodhin = true
+                    this.todonttokrito = true
+                    this.approved = false
+                    this.lisenefee = false
+                } else if (res.data.status == 'approved' && res.data.payment_status == 'Unpaid') {
+                    console.log('approved');
                     this.aplication = true
-                    this.payment = true
-                    this.sec = true
-                    this.chair = true
-                    this.complate = true
+                    this.todonttodhin = true
+                    this.todonttokrito = true
+                    this.approved = true
+                    this.lisenefee = false
+                } else if (res.data.status == 'approved' && res.data.payment_status == 'Paid') {
+                    this.aplication = true
+                    this.todonttodhin = true
+                    this.todonttokrito = true
+                    this.approved = true
+                    this.lisenefee = true
                 }else {
                     console.log('nothing')
                 }
-                // this.aplication = true
-                // this.payment = true
-                // this.sec = true
-                // this.chair = true
-                // this.complate = true
+
 
 
             }
@@ -238,7 +243,7 @@ export default {
 #progressbar li {
     list-style-type: none;
     font-size: 12px;
-    width: 20%;
+    width: 16%;
     float: left;
     position: relative;
 }

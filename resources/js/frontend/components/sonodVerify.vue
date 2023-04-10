@@ -5,18 +5,21 @@
                 <div class="col-md-12 p-sm-0">
 
 
-                    <!-- <form id="msform">
+
+                    <div class="row">
+                <div class="col-md-12 mx-0">
+                    <form id="msform">
                         <ul id="progressbar">
-                            <li :class="{ active: aplication }" id="account"><strong>আবেদন জমা হয়েছে</strong></li>
-                            <li :class="{ active: payment }" id="personal"><strong>পেমেন্ট</strong></li>
-                            <li :class="{ active: sec }" id="payment"><strong>সেক্রেটারি</strong></li>
-                            <li :class="{ active: chair }" id="confirm"><strong>চেয়ারম্যান</strong></li>
-                            <li :class="{ active: complate }" id="confirm"><strong>কমপ্লিট</strong></li>
+                            <li class="active" id="account"><strong>আবেদন জমা হয়েছে</strong></li>
+                            <li class="active" id="payment"><strong>তদন্তাধীন</strong></li>
+                            <li class="active" id="confirm"><strong>তদন্তকৃত</strong></li>
+                            <li class="active" id="confirm"><strong>অনুমোদিত</strong></li>
+                            <li :class="{ active: lisenefee }" id="confirm"><strong>লাইসেন্স ফি</strong></li>
 
                         </ul>
-                    </form> -->
-
-
+                    </form>
+                </div>
+            </div>
 
 
                     <div class="d-flex justify-content-between">
@@ -25,7 +28,7 @@
 
                                 <a :href="'/license/'+row.id" v-if="row.payment_status=='Paid'" target="_blank" class="btn btn-sm btn-success">Download</a>
 
-                                <!-- <a :href="'/sonod/d/'+row.id" v-if="row.payment_status=='Unpaid'" target="_blank" class="btn btn-sm btn-success">Pay</a> -->
+                                <a :href="'/l/f/'+row.id+'?f=l'" v-if="row.payment_status=='Unpaid'" target="_blank" class="btn btn-sm btn-success">Pay Now</a>
 
                             </div>
                             <div class="border">
@@ -255,11 +258,8 @@
 export default {
     data(){
         return{
-            aplication: false,
-            payment: false,
-            sec: false,
-            chair: false,
-            complate: false,
+
+            lisenefee: false,
             cancel: false,
             row:{}
         }
@@ -289,34 +289,10 @@ export default {
 
             this.row = res.data
 
-
-
-                if (res.data.stutus == 'Pending' && res.data.payment_status == 'Unpaid') {
-                    console.log('Unpaid');
-                    this.aplication = true
-                    this.payment = false
-                    this.sec = false
-                    this.chair = false
-                    this.complate = false
-                } else if (res.data.stutus == 'Pending' && res.data.payment_status == 'Paid') {
-                    console.log('Paid');
-                    this.aplication = true
-                    this.payment = true
-                    this.sec = false
-                    this.chair = false
-                    this.complate = false
-                } else if (res.data.stutus == 'Secretary_approved' && res.data.payment_status == 'Paid') {
-                    this.aplication = true
-                    this.payment = true
-                    this.sec = true
-                    this.chair = false
-                    this.complate = false
-                } else if (res.data.stutus == 'approved' && res.data.payment_status == 'Paid') {
-                    this.aplication = true
-                    this.payment = true
-                    this.sec = true
-                    this.chair = true
-                    this.complate = true
+            if (res.data.status == 'approved' && res.data.payment_status == 'Unpaid') {
+                    this.lisenefee = false
+                } else if (res.data.status == 'approved' && res.data.payment_status == 'Paid') {
+                    this.lisenefee = true
                 }else {
                     console.log('nothing')
                 }
