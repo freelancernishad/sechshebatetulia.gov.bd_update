@@ -14,7 +14,18 @@ class CitizenInformationController extends Controller
     public function citizeninformationNID(Request $request)
     {
 
+        $client_ip = $_SERVER['REMOTE_ADDR'];
 
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+          $client_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+
+        return  $client_ip;
+
+
+
+
+        return;
 
 
 
