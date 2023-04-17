@@ -47,7 +47,9 @@
                     <td>{{ changeName(item.position) }}</td>
 
 
-                    <td><router-link size="sm" :to="{ name: 'userlistedit', params: { id: item.id } }"
+                    <td>
+                        <span class="btn btn-danger" @click="deleteUser(item.id)">Delete</span>
+                        <router-link size="sm" :to="{ name: 'userlistedit', params: { id: item.id } }"
                     class="btn btn-info mr-1 mt-1">
                     Edit
                 </router-link></td>
@@ -151,6 +153,29 @@ export default {
                 })
                 .catch()
         },
+
+        deleteUser(id){
+            Swal.fire({
+                        title: 'আপনি কি নিশ্চিত?',
+                        text: `এই ইউজার কে ডিলিট করতে চান`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: `হা নিশ্চিত`,
+                        cancelButtonText: `বাতিল`
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            var res = await this.callApi('get', `/api/get/users/delete/${id}`, []);
+                            Notification.customSuccess(`ইউজার সফল ভাবে ডিলিট হয়েছে`);
+                            this.preLooding = false
+                            this.sonodname()
+                        } else {
+                            this.preLooding = false
+                        }
+                    })
+        }
+
 
 
 
