@@ -578,7 +578,7 @@
                                         <label for=""  class="labelColor">আবেদনকারীর ছবি</label>
 
 
-                                        <input type="file" class="custom-file-input" id="passport_size_mage" @change="FileSelected($event, 'passport_size_mage')">
+                                        <input type="file" class="custom-file-input" id="passport_size_mage" accept="image/*" @change="FileSelected($event, 'passport_size_mage')">
                                         <label class="custom-file-label" for="passport_size_mage">Choose file</label>
                                         <img :src="form.passport_size_mage" width="100px" alt="">
 
@@ -592,7 +592,7 @@
                                     <div class="form-group">
                                         <label for=""  class="labelColor">জাতীয় পরিচয়পত্রের কপি</label>
 
-                                        <input type="file" class="custom-file-input" id="nid_copy" @change="FileSelected($event, 'nid_copy')">
+                                        <input type="file" class="custom-file-input" id="nid_copy" accept="image/*" @change="FileSelected($event, 'nid_copy')">
                                         <label class="custom-file-label" for="nid_copy">Choose file</label>
                                         <img :src="form.nid_copy" width="100px" alt="">
 
@@ -611,7 +611,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for=""  class="labelColor">খতিয়ানের কপি</label>
-                                        <input type="file" class="custom-file-input" id="khotiyan_copy" @change="FileSelected($event, 'khotiyan_copy')">
+                                        <input type="file" class="custom-file-input" id="khotiyan_copy" accept="image/*" @change="FileSelected($event, 'khotiyan_copy')">
                                         <label class="custom-file-label" for="khotiyan_copy">Choose file</label>
                                         <img :src="form.khotiyan_copy" width="100px" alt="">
 
@@ -623,7 +623,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for=""  class="labelColor">ভূমি উন্নয়ন কর পরিশোধের কপি</label>
-                                        <input type="file" class="custom-file-input" id="tax_copy" @change="FileSelected($event, 'tax_copy')">
+                                        <input type="file" class="custom-file-input" id="tax_copy" accept="image/*" @change="FileSelected($event, 'tax_copy')">
                                         <label class="custom-file-label" for="tax_copy">Choose file</label>
                                         <img :src="form.tax_copy" width="100px" alt="">
 
@@ -637,7 +637,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for=""  class="labelColor">নকশা/মৌজা ম্যাপ</label>
-                                        <input type="file" class="custom-file-input" id="map" @change="FileSelected($event, 'map')" >
+                                        <input type="file" class="custom-file-input" id="map" accept="image/*" @change="FileSelected($event, 'map')" >
                                         <label class="custom-file-label" for="map">Choose file</label>
                                         <img :src="form.map" width="100px" alt="">
 
@@ -650,7 +650,7 @@
                                 <div class="col-md-6" v-if="form.owner_type=='ওয়ারিশ/উত্তরাধিকার সূত্রে'">
                                     <div class="form-group">
                                         <label for=""  class="labelColor">ওয়ারিশান সনদপত্রের কপি (প্রযোজ্য ক্ষেত্রে)</label>
-                                        <input type="file" class="custom-file-input" id="wyarisan" @change="FileSelected($event, 'wyarisan')">
+                                        <input type="file" class="custom-file-input" id="wyarisan" accept="image/*" @change="FileSelected($event, 'wyarisan')">
                                         <label class="custom-file-label" for="wyarisan">Choose file</label>
                                         <img :src="form.wyarisan" width="100px" alt="">
 
@@ -673,7 +673,7 @@
                                             <tr v-for="(lan, index) in form.land_copy" :key="index">
                                             <td>
                                                 <div class="form-group">
-                                                    <input type="file" class="form-control" @change="FileSelectedLoop($event, index)" required>
+                                                    <input type="file" class="form-control" accept="image/*" @change="FileSelectedLoop($event, index)" required>
                                                     <img :src="form.land_copy[index]" width="100px" alt="">
                                                 </div>
                                         </td>
