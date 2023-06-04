@@ -209,7 +209,7 @@ if ($row->applicant_type == 'একক ব্যক্তি') {
             <h5>দলিলের কপি</h5>
         </div>
 
-        @if(count(json_decode($row->land_copy))>0)
+
 
 
 
@@ -222,7 +222,7 @@ if ($row->applicant_type == 'একক ব্যক্তি') {
 
         @endforeach
 
-        @endif
+
 
     </div>
 
