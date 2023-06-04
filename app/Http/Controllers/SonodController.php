@@ -693,6 +693,7 @@ class SonodController extends Controller
 
 
 
+        $status = $request->stutus;
         $sonod_name = $request->sonod_name;
         $stutus = $request->stutus;
         $word_number = $request->word;
